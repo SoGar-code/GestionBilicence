@@ -11,8 +11,52 @@ public class Student extends Entity {
 		this.first_name = first_name;
 		this.last_name = last_name;
 	}
+	
+	public Student(int index, String first_name, String last_name) {
+		super(index);
+		this.first_name = first_name;
+		this.last_name = last_name;
+	}
+	
+	public String getFirst_name() {
+		return first_name;
+	}
 
-	public Student defaultElement(){
+	public void setFirst_name(String first_name) {
+		this.first_name = first_name;
+	}
+
+	public String getLast_name() {
+		return last_name;
+	}
+
+	public void setLast_name(String last_name) {
+		this.last_name = last_name;
+	}
+
+	@Override
+	public Object getEntry(int i) {
+		switch (i){
+			case 0:
+				return first_name;
+			case 1:
+				return last_name;
+			default:
+				return "-";
+		}
+	}
+
+	@Override
+	public void setEntry(int i, Object obj) {
+		switch (i){
+		case 0:
+			this.first_name=(String)obj;
+		case 1:
+			this.last_name=(String)obj;
+		}
+	}
+	
+	public static Student defaultElement(){
 		return new Student("Jean","Par Défaut");
 	}
 }

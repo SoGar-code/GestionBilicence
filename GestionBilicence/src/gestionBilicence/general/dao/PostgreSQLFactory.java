@@ -23,6 +23,7 @@ public class PostgreSQLFactory extends AbstractDaoFactory {
 	        conn = DriverManager.getConnection(url, user, passwd);
 	        // commits automatiques ou pas
 	        conn.setAutoCommit(true);
+			System.out.println("PostgreSQLFactory ready!");
 		} catch (ClassNotFoundException e) {
 	        e.printStackTrace();
 		} catch (PSQLException e){
@@ -32,13 +33,12 @@ public class PostgreSQLFactory extends AbstractDaoFactory {
 		} catch (SQLException e){
 			e.printStackTrace();
 		}
-		System.out.println("PostgreSQLFactory ready!");
+
 	}
 
 	@Override
 	public Dao getStudentDao() {
-		// TODO Auto-generated method stub
-		return null;
+		return new PostgreSQLStudentDao(conn);
 	}
 
 	@Override

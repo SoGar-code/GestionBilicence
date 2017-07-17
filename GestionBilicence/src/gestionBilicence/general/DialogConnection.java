@@ -31,7 +31,7 @@ public class DialogConnection extends JDialog{
 	
 	public DialogConnection(){
 		super();
-		this.setTitle("Connection parameters");
+		this.setTitle("Gestion Bilicence -- connection parameters");
 		this.setModal(true);
 		this.setSize(400,250);
 		this.setLocationRelativeTo(null);
