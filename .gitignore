@@ -1,0 +1,5 @@
+# avoid hidden files and folders (.settings, .classpath, .project, ...)
+GestionBilicence/.*
+
+# avoid bin folder
+GestionBilicence/bin*
