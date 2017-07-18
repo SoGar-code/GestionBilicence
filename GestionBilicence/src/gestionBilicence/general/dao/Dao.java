@@ -3,6 +3,8 @@ package gestionBilicence.general.dao;
 import java.sql.Connection;
 import java.util.LinkedList;
 
+import gestionBilicence.general.Entity;
+
 public abstract class Dao<T>{
 	protected static Connection conn;
 

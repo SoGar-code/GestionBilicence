@@ -3,8 +3,8 @@ package gestionBilicence.edition;
 import gestionBilicence.general.Entity;
 
 public class Student extends Entity {
-	private String first_name;
-	private String last_name;
+	protected String first_name;
+	protected String last_name;
 	
 	public Student(String first_name, String last_name) {
 		super();
@@ -51,12 +51,18 @@ public class Student extends Entity {
 		switch (i){
 		case 0:
 			this.first_name=(String)obj;
+			break;
 		case 1:
 			this.last_name=(String)obj;
+			break;
 		}
 	}
 	
 	public static Student defaultElement(){
 		return new Student("Jean","Par Défaut");
+	}
+
+	public String toString(){
+		return "Student id= "+this.index+", "+first_name+" "+last_name;
 	}
 }

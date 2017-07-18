@@ -6,29 +6,31 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 
-import gestionBilicence.general.DaoTableModel;
-import gestionBilicence.general.Entity;
+import gestionBilicence.general.Delete;
 import gestionBilicence.general.GeneralController;
 import gestionBilicence.general.GeneralPanel;
 import gestionBilicence.general.GeneralWindow;
-import gestionBilicence.general.dao.Dao;
+import gestionBilicence.general.ListTableModel;
 
 public class EditionWindow extends GeneralWindow {
-	
 	/*
 	 * Window to edit elements in the database
 	 */
+	private GeneralController gc = GeneralController.getInstance();
 
 	public EditionWindow(){
 		super();
 		
 		// Creation of student tab:
-		DaoTableModel daoTableModel = new DaoTableModel(
-				new Class[] {String.class, String.class, String.class},
-				new String[] {"First name","Family Name","Suppr."},
-				GeneralController.getStudentDao()
+		gc.updateData();
+		ListTableModel listTableModel = new ListTableModel(
+				new Class[] {String.class, String.class, Delete.class},
+				new String[] {"First name","Family Name","Delete"},
+				gc.getCurrentData()
 				);
-		JPanel tabStudent = new GeneralPanel(daoTableModel);		
+		// include listTableModel as observer of gc (changes in the data).
+		gc.addObserver(listTableModel);
+		JPanel tabStudent = new GeneralPanel(listTableModel);		
 		
 		// Creation of exams tab:
 		JTable tabExams = new JTable();
@@ -42,4 +44,8 @@ public class EditionWindow extends GeneralWindow {
 		this.add(tabbedPane, BorderLayout.CENTER);
 	}
 
+	public void updateWindow(){
+		// gc fetches updated data
+		gc.updateData();
+	}
 }

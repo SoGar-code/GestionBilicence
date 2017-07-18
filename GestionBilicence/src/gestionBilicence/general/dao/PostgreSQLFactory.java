@@ -50,8 +50,13 @@ public class PostgreSQLFactory extends AbstractDaoFactory {
 	@Override
 	public Dao getDao(int i) {
 		// Idea: make a switch over all possible entities
-		// TODO Auto-generated method stub
-		return null;
+		// NB: the numbering of the classes of Entities should coincide with that in GeneralController
+		switch(i){
+			case 0:
+				return new PostgreSQLStudentDao(conn);
+			default:
+				return null;
+		}
 	}
 
 }

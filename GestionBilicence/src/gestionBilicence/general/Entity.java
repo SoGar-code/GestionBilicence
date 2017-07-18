@@ -1,7 +1,7 @@
 package gestionBilicence.general;
 
 public abstract class Entity {
-	private int index;
+	protected int index;
 
 	/*
 	 * Superclass for the POJO used for DAO

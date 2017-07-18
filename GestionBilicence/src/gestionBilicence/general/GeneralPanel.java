@@ -6,9 +6,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.TableCellRenderer;
 
 /* 
  * Superclass for the edition panels. Includes: 
@@ -21,34 +24,32 @@ public class GeneralPanel<T> extends JPanel{
 	protected JTable table;
 	protected JPanel pan;
 	protected JButton saveButton;
+	protected GeneralController gc = GeneralController.getInstance();
 	
-	public GeneralPanel(DaoTableModel model){
+	public GeneralPanel(ListTableModel model){
 		super(new BorderLayout());
-		//this.model = model;
 	    this.table = new JTable(model);
 	    this.table.setRowHeight(30);
+	    this.table.setDefaultEditor(Delete.class, new ButtonDeleteEditor(new JCheckBox()));
+	    this.table.setDefaultRenderer(Delete.class, new ButtonRenderer());
 	    
 		JButton newLine = new JButton("New line");
 		saveButton = new JButton("Save/update");
 	    
 		class AddListener implements ActionListener{
 			public void actionPerformed(ActionEvent event){		
-				((DaoTableModel)table.getModel()).addRow();
+				gc.addRow();
 			}
 		}
 		
-		class SvgListener implements ActionListener{
-			
+		class SaveListener implements ActionListener{
 			public void actionPerformed(ActionEvent event){
-				// MàJ de la table (en part. calcul des prix)
-				((DaoTableModel)table.getModel()).fireTableDataChanged();
-				// Svg 
-				svgMaJTableau();
+				gc.saveTable();
 			}
 		}
 	    
 	    newLine.addActionListener(new AddListener());
-	    saveButton.addActionListener(new SvgListener());
+	    saveButton.addActionListener(new SaveListener());
 	    
 	    GridLayout gl1 = new GridLayout(1,2);
 	    gl1.setHgap(5);
@@ -62,25 +63,4 @@ public class GeneralPanel<T> extends JPanel{
 	    this.add(pan, BorderLayout.SOUTH);
 	}
 	
-	public JTable getTableau(){
-		return this.table;
-	}
-	
-	public DaoTableModel getModel(){
-		return (DaoTableModel)table.getModel();
-	}
-	
-	// Action effectuée par le bouton "Svg/MàJ" (modif. dans TableauTrans, TableauPlacement)
-	public void svgMaJTableau(){
-		// Sauvegarde des données modifiées
-		int i = 0;
-		DaoTableModel model = (DaoTableModel)table.getModel();
-		for (Entity obj : model.getData()){
-			if (model.getDaoT().update(obj)){
-				i++;						
-			} else {};
-		};
-		System.out.println("GeneralPanel.SvgListener : saved "+i+" lines.");
-		model.updateData();
-	}
 }
