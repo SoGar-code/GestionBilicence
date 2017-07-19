@@ -4,14 +4,19 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import javax.swing.JOptionPane;
+import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
+import gestionBilicence.edition.Exams;
+import gestionBilicence.edition.Semester;
 import gestionBilicence.edition.Student;
 import gestionBilicence.general.dao.AbstractDaoFactory;
 import gestionBilicence.general.dao.Dao;
 import gestionBilicence.general.observer.Observable;
 import gestionBilicence.general.observer.Observer;
 
-public class GeneralController implements Observable{
+public class GeneralController implements Observable, ChangeListener{
 	/*
 	 * A class used as local storage of data (as opposed to distant DB).
 	 * Doubles as a singleton class giving access to the different Dao classes.
@@ -31,10 +36,6 @@ public class GeneralController implements Observable{
 	
 	public static GeneralController getInstance(){
 		return gc;
-	}
-	
-	public void updateCurrentEntity(int entity){
-		this.currentEntity = entity;
 	}
 
 	public void updateData(){
@@ -87,7 +88,7 @@ public class GeneralController implements Observable{
 		} 
 	}
 
-	// Action corresponding to the listener on the "Save/update" button
+	// Action corresponding to the listener of the "Save/update" button
 	public void saveTable(){
 		// Saves modified data
 		int i = 0;
@@ -102,6 +103,40 @@ public class GeneralController implements Observable{
 		this.updateObservable(currentData);
 	}
 	
+	//===================================
+	// management of Dao
+	//===================================
+
+	public Dao<Student> getStudentDao(){
+		return df.getStudentDao();
+	}
+	
+	public Dao<Exams> getExamsDao(){
+		return df.getExamsDao();
+	}
+	
+	public Dao<Semester> getSemesterDao(){
+		return df.getSemesterDao();
+	}
+	
+	public Dao<Entity> getDao(int i){
+		return df.getDao(i);
+	}
+	
+	//=================================
+	// Listeners and observable
+	//=================================
+
+	// listener of the JTabbed pane
+	// (recovers the currentEntity)
+	@Override
+	public void stateChanged(ChangeEvent e) {
+		this.currentEntity=((JTabbedPane)e.getSource()).getSelectedIndex();
+		System.out.println("GC.stateChanged - current Entity = "+currentEntity);
+		this.updateData();
+		
+	}
+	
 	// methods related to the Observer pattern
 	@Override
 	public void addObserver(Observer obs) {
@@ -113,24 +148,6 @@ public class GeneralController implements Observable{
 		for (Observer obs: listObserver){
 			obs.updateObserver(currentData);
 		}
-	}
-	
-	//===================================
-	// management of Dao
-	//===================================
-
-	public Dao<Student> getStudentDao(){
-		return df.getStudentDao();
-	}
-	
-	/*
-	public Dao<Exams> getExamsDao(){
-		return df.getExamsDao();
-	}
-	*/
-	
-	public Dao<Entity> getDao(int i){
-		return df.getDao(i);
 	}
 
 }

@@ -1,15 +1,36 @@
 package gestionBilicence.general.dao;
 
+import gestionBilicence.edition.Exams;
+import gestionBilicence.edition.Semester;
+import gestionBilicence.edition.Student;
 import gestionBilicence.general.DialogConnection;
 
 public abstract class AbstractDaoFactory {
+	/*
+	 * Factory class for Dao classes
+	 * Includes getDao(int i)
+	 */
 
-	public abstract Dao getStudentDao();
+	public abstract Dao<Student> getStudentDao();
 	
-	public abstract Dao getExamsDao();
+	public abstract Dao<Exams> getExamsDao();
+	
+	public abstract Dao<Semester> getSemesterDao();
 	
 	// to get Dao class indexed by an integer
-	public abstract Dao getDao(int i);
+	public Dao getDao(int i){
+		switch (i){
+			case 0:
+				return getStudentDao();
+			case 1:
+				return getExamsDao();
+			case 2:
+				return getSemesterDao();
+			default:
+				System.out.println("AbstractDaoFactory.getDao -- type not found!");
+				return null;
+		}
+	}
 	
 	public static AbstractDaoFactory getFactory(){
 		DialogConnection dialogConn = new DialogConnection();

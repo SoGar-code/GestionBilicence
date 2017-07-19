@@ -21,7 +21,7 @@ public class EditionWindow extends GeneralWindow {
 	public EditionWindow(){
 		super();
 		
-		// Creation of student tab:
+		// Creation of student tab (already initialized):
 		gc.updateData();
 		ListTableModel listTableModel = new ListTableModel(
 				new Class[] {String.class, String.class, Delete.class},
@@ -33,13 +33,19 @@ public class EditionWindow extends GeneralWindow {
 		JPanel tabStudent = new GeneralPanel(listTableModel);		
 		
 		// Creation of exams tab:
-		JTable tabExams = new JTable();
+		JPanel tabExams = new GeneralPanel(listTableModel);
+		JPanel tabSemesters = new GeneralPanel(listTableModel);
 		
 		// Final assembly into a tabbed panel.
 		JTabbedPane tabbedPane = new JTabbedPane();
 		tabbedPane.addTab("Students",tabStudent);
 		tabbedPane.addTab("Exams",tabExams);
+		tabbedPane.addTab("Semesters",tabSemesters);
 		
+		// Listeners for 
+		tabbedPane.addChangeListener(gc);
+		
+		//
 		this.setLayout(new BorderLayout());
 		this.add(tabbedPane, BorderLayout.CENTER);
 	}

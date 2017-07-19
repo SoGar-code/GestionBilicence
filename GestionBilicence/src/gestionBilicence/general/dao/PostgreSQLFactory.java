@@ -8,6 +8,10 @@ import javax.swing.JOptionPane;
 
 import org.postgresql.util.PSQLException;
 
+import gestionBilicence.edition.Exams;
+import gestionBilicence.edition.Semester;
+import gestionBilicence.edition.Student;
+
 public class PostgreSQLFactory extends AbstractDaoFactory {
 	/*
 	 * Create a connection to a PostgreSQL database
@@ -37,26 +41,18 @@ public class PostgreSQLFactory extends AbstractDaoFactory {
 	}
 
 	@Override
-	public Dao getStudentDao() {
+	public Dao<Student> getStudentDao() {
 		return new PostgreSQLStudentDao(conn);
 	}
 
 	@Override
-	public Dao getExamsDao() {
-		// TODO Auto-generated method stub
-		return null;
+	public Dao<Exams> getExamsDao() {
+		return new PostgreSQLExamsDao(conn);
 	}
-
+	
 	@Override
-	public Dao getDao(int i) {
-		// Idea: make a switch over all possible entities
-		// NB: the numbering of the classes of Entities should coincide with that in GeneralController
-		switch(i){
-			case 0:
-				return new PostgreSQLStudentDao(conn);
-			default:
-				return null;
-		}
+	public Dao<Semester> getSemesterDao() {
+		return new PostgreSQLSemesterDao(conn);
 	}
 
 }
