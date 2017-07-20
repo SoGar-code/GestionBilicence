@@ -8,6 +8,11 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 public class GTable extends JTable {
+	/*
+	 * A table adapted to our needs, with:
+	 * _ a copy of the general controller
+	 * _ a cast on the TableModel we use.
+	 */
 	private GeneralController gc = GeneralController.getInstance();
 
 	public GTable(ListTableModel model) {
@@ -19,12 +24,5 @@ public class GTable extends JTable {
 		// the cast below should be safe...
 		return (ListTableModel)this.dataModel;
 	}
-
-	public void addRow(){
-		gc.addRow(this.getModel().getData());
-	}
 	
-	public void saveTable(){
-		gc.saveTable(this.getModel().getData());
-	}
 }

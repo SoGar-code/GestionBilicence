@@ -49,4 +49,7 @@ public class Semester extends Entity {
 		return new Semester("default semester");
 	}
 
+	public String toString(){
+		return name;
+	}
 }

@@ -40,15 +40,16 @@ public class GeneralPanel<T> extends JPanel{
 		saveButton = new JButton("Save/update");
 	    
 		// Keeping the listeners as generic as possible
+		// while putting the "data methods" in the TableModel
 		class AddListener implements ActionListener{
 			public void actionPerformed(ActionEvent event){	
-				table.addRow();
+				table.getModel().addRow();
 			}
 		}
 		
 		class SaveListener implements ActionListener{
 			public void actionPerformed(ActionEvent event){
-				table.saveTable();
+				table.getModel().saveTable();
 			}
 		}
 	    

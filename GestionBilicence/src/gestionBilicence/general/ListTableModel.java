@@ -72,6 +72,14 @@ public class ListTableModel extends AbstractTableModel implements Observer{
 		this.data = currentData;
 		this.fireTableDataChanged();
 	}
+	
+	public void addRow(){
+		gc.addRow(data);
+	}
+	
+	public void saveTable(){
+		gc.saveTable(data);
+	}
 
 	/*
 	  // fonction utilisée pour les champs numériques comme "Add (€)"
