@@ -14,8 +14,7 @@ public class ListTableModel extends AbstractTableModel implements Observer{
 	   * _ converting String into Date and Float
 	   * _ updating data
 	   */
-	protected LinkedList<Entity> data;
-
+	private LinkedList<Entity> data;
 
 	protected Class[] listClass;
 	protected String[] title;
@@ -64,13 +63,13 @@ public class ListTableModel extends AbstractTableModel implements Observer{
 
 	public void setData(LinkedList<Entity> data) {
 		this.data = data;
+		this.fireTableDataChanged();
 	}
 
 	// data update, provided by Observer pattern 
 	//(data flowing from gc to the model)
 	public void updateObserver(LinkedList<Entity> currentData){
-		this.data = currentData;
-		this.fireTableDataChanged();
+		this.setData(currentData);
 	}
 	
 	public void addRow(){

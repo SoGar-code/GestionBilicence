@@ -41,6 +41,10 @@ public class GeneralController implements Observable, ChangeListener{
 	public LinkedList<Entity> getCurrentData() {
 		return this.getDao(currentEntity).getData();
 	}
+	
+	public int getCurrentEntity() {
+		return this.currentEntity;
+	}
 
 	public void removeRow(int position, LinkedList<Entity> currentData){
 		boolean test = this.getDao(currentEntity).delete(currentData.get(position));
@@ -131,8 +135,8 @@ public class GeneralController implements Observable, ChangeListener{
 		System.out.println("GC.stateChanged - current Entity = "+currentEntity);
 		
 		// update the data associated to the source according to currentEntity
-		GeneralPanel generalPanel = (GeneralPanel)tabbedPane.getSelectedComponent();
-		ListTableModel model = generalPanel.getTable().getModel();
+		GTable gTable = (GTable)tabbedPane.getSelectedComponent();
+		ListTableModel model = gTable.getModel();
 		System.out.println("GC.stateChanged - jusque là tout va bien !");
 		model.setData(this.getCurrentData());
 		model.fireTableDataChanged();
