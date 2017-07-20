@@ -13,22 +13,25 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
 
-/* 
- * Superclass for the edition panels. Includes: 
- * _ saving buttons and listeners
- * _ new line 
- * 
- */
+import gestionBilicence.general.editorsRenderers.ButtonDeleteEditor;
+import gestionBilicence.general.editorsRenderers.ButtonRenderer;
+import gestionBilicence.general.editorsRenderers.Delete;
 
 public class GeneralPanel<T> extends JPanel{
-	protected JTable table;
+	/* 
+	 * Superclass for the edition panels. Includes: 
+	 * _ a table with predefined operations (addRow, saveTable)
+	 * _ saving buttons and listeners
+	 * _ new line 
+	 */
+	protected GTable table;
 	protected JPanel pan;
 	protected JButton saveButton;
 	protected GeneralController gc = GeneralController.getInstance();
 	
 	public GeneralPanel(ListTableModel model){
 		super(new BorderLayout());
-	    this.table = new JTable(model);
+	    this.table = new GTable(model);
 	    this.table.setRowHeight(30);
 	    this.table.setDefaultEditor(Delete.class, new ButtonDeleteEditor(new JCheckBox()));
 	    this.table.setDefaultRenderer(Delete.class, new ButtonRenderer());
@@ -36,15 +39,16 @@ public class GeneralPanel<T> extends JPanel{
 		JButton newLine = new JButton("New line");
 		saveButton = new JButton("Save/update");
 	    
+		// Keeping the listeners as generic as possible
 		class AddListener implements ActionListener{
-			public void actionPerformed(ActionEvent event){		
-				gc.addRow();
+			public void actionPerformed(ActionEvent event){	
+				table.addRow();
 			}
 		}
 		
 		class SaveListener implements ActionListener{
 			public void actionPerformed(ActionEvent event){
-				gc.saveTable();
+				table.saveTable();
 			}
 		}
 	    
@@ -63,4 +67,7 @@ public class GeneralPanel<T> extends JPanel{
 	    this.add(pan, BorderLayout.SOUTH);
 	}
 	
+	public GTable getTable(){
+		return table;
+	}
 }

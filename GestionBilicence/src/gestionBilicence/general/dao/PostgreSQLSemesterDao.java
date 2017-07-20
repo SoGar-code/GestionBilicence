@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 import gestionBilicence.edition.Semester;
 import gestionBilicence.edition.Student;
 
-public class PostgreSQLSemesterDao extends Dao<Semester> {
+public class PostgreSQLSemesterDao extends AbstractSemesterDao {
 	
 	public PostgreSQLSemesterDao(Connection conn){
 		super();
@@ -22,7 +22,7 @@ public class PostgreSQLSemesterDao extends Dao<Semester> {
 	@Override
 	public boolean create(Semester obj) {
 		try{
-			String query="INSERT INTO exams(semester_name) VALUES(?)";
+			String query="INSERT INTO semesters(semester_name) VALUES(?)";
 			PreparedStatement state = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			state.setString(1, obj.getName());
 			int nb_rows = state.executeUpdate();
@@ -47,7 +47,7 @@ public class PostgreSQLSemesterDao extends Dao<Semester> {
 	@Override
 	public boolean update(Semester obj) {
 		try{
-			String query="UPDATE exams SET smester_name = ? WHERE id_semester = ?";
+			String query="UPDATE semesters SET semester_name = ? WHERE id_semester = ?";
 			PreparedStatement state = conn.prepareStatement(query,ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			state.setString(1, obj.getName());
 			state.setInt(2, obj.getIndex());
@@ -87,7 +87,7 @@ public class PostgreSQLSemesterDao extends Dao<Semester> {
 	@Override
 	public Semester find(int index) {
 		try{
-			String query="SELECT id_semester, semester_name FROM semester WHERE id_semester = ?";
+			String query="SELECT id_semester, semester_name FROM semesters WHERE id_semester = ?";
 			PreparedStatement state = conn.prepareStatement(query,ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			state.setInt(1, index);
 			ResultSet res = state.executeQuery();

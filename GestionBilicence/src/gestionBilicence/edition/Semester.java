@@ -35,8 +35,14 @@ public class Semester extends Entity {
 
 	@Override
 	public void setEntry(int i, Object obj) {
-		// only one entry
-		this.name = (String) obj;
+		switch(i){
+			case 0:
+				this.name = (String) obj;
+				break;
+			default:
+				System.out.println("Semester.setEntry - got int i="+i);
+		}
+
 	}
 
 	public static Semester defaultElement() {

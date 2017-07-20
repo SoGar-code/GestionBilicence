@@ -55,4 +55,10 @@ public class MySQLFactory extends AbstractDaoFactory {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public AbstractSemesterDao getSemesterDao() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

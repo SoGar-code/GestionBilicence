@@ -1,4 +1,4 @@
-package gestionBilicence.general;
+package gestionBilicence.general.editorsRenderers;
 
 import java.awt.Component;
 

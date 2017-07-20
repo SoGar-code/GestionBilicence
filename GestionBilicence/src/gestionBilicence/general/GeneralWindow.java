@@ -10,6 +10,7 @@ public class GeneralWindow extends JPanel {
 	 * Method:
 	 * _ updateWindow()
 	 */
+	protected GeneralController gc = GeneralController.getInstance();
 
 	// update the window when required
 	public void updateWindow(){

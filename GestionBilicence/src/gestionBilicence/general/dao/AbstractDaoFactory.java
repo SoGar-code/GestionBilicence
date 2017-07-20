@@ -1,7 +1,6 @@
 package gestionBilicence.general.dao;
 
 import gestionBilicence.edition.Exams;
-import gestionBilicence.edition.Semester;
 import gestionBilicence.edition.Student;
 import gestionBilicence.general.DialogConnection;
 
@@ -15,7 +14,7 @@ public abstract class AbstractDaoFactory {
 	
 	public abstract Dao<Exams> getExamsDao();
 	
-	public abstract Dao<Semester> getSemesterDao();
+	public abstract AbstractSemesterDao getSemesterDao();
 	
 	// to get Dao class indexed by an integer
 	public Dao getDao(int i){

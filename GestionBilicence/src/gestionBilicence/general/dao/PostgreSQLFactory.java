@@ -51,8 +51,7 @@ public class PostgreSQLFactory extends AbstractDaoFactory {
 	}
 	
 	@Override
-	public Dao<Semester> getSemesterDao() {
+	public AbstractSemesterDao getSemesterDao() {
 		return new PostgreSQLSemesterDao(conn);
 	}
-
 }

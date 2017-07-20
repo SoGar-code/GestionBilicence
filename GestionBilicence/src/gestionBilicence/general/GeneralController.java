@@ -9,23 +9,23 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import gestionBilicence.edition.Exams;
-import gestionBilicence.edition.Semester;
 import gestionBilicence.edition.Student;
 import gestionBilicence.general.dao.AbstractDaoFactory;
+import gestionBilicence.general.dao.AbstractSemesterDao;
 import gestionBilicence.general.dao.Dao;
 import gestionBilicence.general.observer.Observable;
 import gestionBilicence.general.observer.Observer;
 
 public class GeneralController implements Observable, ChangeListener{
 	/*
-	 * A class used as local storage of data (as opposed to distant DB).
+	 * A class used to store data regarding the current state of the interface
+	 * (e.g. currentEntity).
 	 * Doubles as a singleton class giving access to the different Dao classes.
 	 */
 	
 	private static GeneralController gc = new GeneralController();
 	// Implicitly, df encodes which type of Database we are using in this instance.
 	private static AbstractDaoFactory df;
-	private LinkedList<Entity> currentData = new LinkedList<Entity>();
 	private int currentEntity=0;
 	
 	private ArrayList<Observer> listObserver = new ArrayList<Observer>();
@@ -38,19 +38,11 @@ public class GeneralController implements Observable, ChangeListener{
 		return gc;
 	}
 
-	public void updateData(){
-		this.currentData = this.getDao(currentEntity).getData();
-		System.out.println("GC.updateData()-- current elements:======");
-		for (Entity ent:currentData){
-			System.out.println(ent.toString());			
-		}
-	}
-
 	public LinkedList<Entity> getCurrentData() {
-		return currentData;
+		return this.getDao(currentEntity).getData();
 	}
 
-	public void removeRow(int position){
+	public void removeRow(int position, LinkedList<Entity> currentData){
 		boolean test = this.getDao(currentEntity).delete(currentData.get(position));
 		if (test){
 			currentData.remove(position);
@@ -63,7 +55,7 @@ public class GeneralController implements Observable, ChangeListener{
 	}
 
 	// Take a non-initialized element
-	public void addRow(Entity obj){
+	public void addRow(Entity obj,LinkedList<Entity> currentData){
 		boolean test = this.getDao(currentEntity).create(obj);
 		if (test){
 			currentData.add(obj);
@@ -76,7 +68,7 @@ public class GeneralController implements Observable, ChangeListener{
 	}
 
 	// Create a new element
-	public void addRow(){
+	public void addRow(LinkedList<Entity> currentData){
 		Entity obj = (Entity)this.getDao(currentEntity).newElement();
 		if (obj == null){
 			JOptionPane jop = new JOptionPane();
@@ -89,7 +81,7 @@ public class GeneralController implements Observable, ChangeListener{
 	}
 
 	// Action corresponding to the listener of the "Save/update" button
-	public void saveTable(){
+	public void saveTable(LinkedList<Entity> currentData){
 		// Saves modified data
 		int i = 0;
 		for (Entity obj : currentData){
@@ -115,7 +107,7 @@ public class GeneralController implements Observable, ChangeListener{
 		return df.getExamsDao();
 	}
 	
-	public Dao<Semester> getSemesterDao(){
+	public AbstractSemesterDao getSemesterDao(){
 		return df.getSemesterDao();
 	}
 	
@@ -131,10 +123,19 @@ public class GeneralController implements Observable, ChangeListener{
 	// (recovers the currentEntity)
 	@Override
 	public void stateChanged(ChangeEvent e) {
-		this.currentEntity=((JTabbedPane)e.getSource()).getSelectedIndex();
-		System.out.println("GC.stateChanged - current Entity = "+currentEntity);
-		this.updateData();
+		// NB: the source is the JTabbedPane in EditionWindow
+		JTabbedPane tabbedPane = (JTabbedPane)e.getSource();
 		
+		// change the currentEntity
+		this.currentEntity=tabbedPane.getSelectedIndex();
+		System.out.println("GC.stateChanged - current Entity = "+currentEntity);
+		
+		// update the data associated to the source according to currentEntity
+		GeneralPanel generalPanel = (GeneralPanel)tabbedPane.getSelectedComponent();
+		ListTableModel model = generalPanel.getTable().getModel();
+		System.out.println("GC.stateChanged - jusque là tout va bien !");
+		model.setData(this.getCurrentData());
+		model.fireTableDataChanged();
 	}
 	
 	// methods related to the Observer pattern
