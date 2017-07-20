@@ -4,7 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -16,14 +19,15 @@ import gestionBilicence.general.GeneralWindow;
 import gestionBilicence.general.ListTableModel;
 import gestionBilicence.general.editorsRenderers.Delete;
 
+/**
+ * Window to edit elements in the database
+ * contains "New line" and "Save/update" buttons,
+ * together with their listeners.
+ * 
+ * NB: GeneralWindow provides a copy of gc (GeneralController)
+ */
+
 public class EditionWindow extends GeneralWindow {
-	/*
-	 * Window to edit elements in the database
-	 * contains "New line" and "Save/update" buttons,
-	 * together with their listeners.
-	 * 
-	 * NB: GeneralWindow provides a copy of gc (GeneralController)
-	 */
 	
 	private JPanel pan;
 	private JButton saveButton;
@@ -37,9 +41,9 @@ public class EditionWindow extends GeneralWindow {
 		// Creation of the different tabs
 		//======================
 		
-		LinkedList<Entity>[] dataVect = (LinkedList<Entity>[]) new LinkedList<?>[3];
-		ListTableModel[] listTableModelVect = new ListTableModel[3];
-		GTable[] tabEntityVect = new GTable[3];
+		LinkedList<Entity>[] dataVect = (LinkedList<Entity>[]) new LinkedList<?>[4];
+		ListTableModel[] listTableModelVect = new ListTableModel[4];
+		GTable[] tabEntityVect = new GTable[4];
 		
 		// Creation of student tab (already initialized):
 		listTableModelVect[0] = new ListTableModel(
@@ -55,9 +59,8 @@ public class EditionWindow extends GeneralWindow {
 		listTableModelVect[1] = new ListTableModel(
 				new Class[] {String.class, Semester.class, Integer.class,Delete.class},
 				new String[] {"Name","Semester","Coefficient", "Delete"},
-				new LinkedList<Entity>() // at that point, we should have currentEntity=0
+				new LinkedList<Entity>()
 				);
-		// include listTableModel as observer of gc (changes in the data).
 		gc.addObserver(listTableModelVect[1]);
 		tabEntityVect[1] = new GTable(listTableModelVect[1]);
 		
@@ -65,16 +68,24 @@ public class EditionWindow extends GeneralWindow {
 		listTableModelVect[2] = new ListTableModel(
 				new Class[] {String.class, Delete.class},
 				new String[] {"Name","Delete"},
-				new LinkedList<Entity>() // at that point, we should have currentEntity=0
+				new LinkedList<Entity>()
 				);
-		// include listTableModel as observer of gc (changes in the data).
 		gc.addObserver(listTableModelVect[2]);
 		tabEntityVect[2] = new GTable(listTableModelVect[2]);
 		
+		// Creation of marks tab:
+		listTableModelVect[3] = new ListTableModel(
+				new Class[] {Exams.class, Student.class, float.class, Delete.class},
+				new String[] {"Exam","Student","Mark","Delete"},
+				new LinkedList<Entity>()
+				);
+		gc.addObserver(listTableModelVect[3]);
+		tabEntityVect[3] = new GTable(listTableModelVect[3]);
+		
 		// Final assembly into a tabbed panel.
 		tabbedPane = new JTabbedPane();
-		String[] listTabs = {"Students","Exams","Semesters"};
-		for (int i = 0; i <= 2; i++){
+		String[] listTabs = {"Students","Exams","Semesters","Marks"};
+		for (int i = 0; i <= 3; i++){
 			tabbedPane.addTab(listTabs[i],tabEntityVect[i]);
 		}
 		
@@ -101,10 +112,18 @@ public class EditionWindow extends GeneralWindow {
 		class SaveListener implements ActionListener{
 			public void actionPerformed(ActionEvent event){
 				((GTable) tabbedPane.getSelectedComponent()).getModel().saveTable();
+				
+				// if currentEntity == 0 or 1, notify the Marks tab
+				Set<Integer> indices = new HashSet<Integer>(Arrays.asList(0,1));
+				int currentEntity = tabbedPane.getSelectedIndex();
+				if (indices.contains(currentEntity)){
+					((GTable) tabbedPane.getComponent(3)).updateCombo(currentEntity);
+				}
 				// currentEntity == 2 i.e. Semesters
-				if (tabbedPane.getSelectedIndex()==2){
-					// update comboSemester for Exams tab
+				if (currentEntity==2){
+					// update comboSemester for Exams and Marks tab
 					((GTable) tabbedPane.getComponent(1)).updateComboSemester();
+					((GTable) tabbedPane.getComponent(3)).updateComboSemester();
 				}
 			}
 		}

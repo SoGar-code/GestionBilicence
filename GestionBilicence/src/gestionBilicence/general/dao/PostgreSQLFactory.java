@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 import org.postgresql.util.PSQLException;
 
 import gestionBilicence.edition.Exams;
+import gestionBilicence.edition.Mark;
 import gestionBilicence.edition.Semester;
 import gestionBilicence.edition.Student;
 
@@ -47,11 +48,16 @@ public class PostgreSQLFactory extends AbstractDaoFactory {
 
 	@Override
 	public Dao<Exams> getExamsDao() {
-		return new PostgreSQLExamsDao(conn);
+		return new PostgreSQLExamDao(conn);
 	}
 	
 	@Override
-	public AbstractSemesterDao getSemesterDao() {
+	public Dao<Semester> getSemesterDao() {
 		return new PostgreSQLSemesterDao(conn);
+	}
+	
+	@Override
+	public Dao<Mark> getMarkDao() {
+		return new PostgreSQLMarkDao(conn);
 	}
 }

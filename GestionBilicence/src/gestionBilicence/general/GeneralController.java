@@ -9,9 +9,9 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import gestionBilicence.edition.Exams;
+import gestionBilicence.edition.Semester;
 import gestionBilicence.edition.Student;
 import gestionBilicence.general.dao.AbstractDaoFactory;
-import gestionBilicence.general.dao.AbstractSemesterDao;
 import gestionBilicence.general.dao.Dao;
 import gestionBilicence.general.observer.Observable;
 import gestionBilicence.general.observer.Observer;
@@ -111,7 +111,7 @@ public class GeneralController implements Observable, ChangeListener{
 		return df.getExamsDao();
 	}
 	
-	public AbstractSemesterDao getSemesterDao(){
+	public Dao<Semester> getSemesterDao(){
 		return df.getSemesterDao();
 	}
 	
@@ -137,7 +137,6 @@ public class GeneralController implements Observable, ChangeListener{
 		// update the data associated to the source according to currentEntity
 		GTable gTable = (GTable)tabbedPane.getSelectedComponent();
 		ListTableModel model = gTable.getModel();
-		System.out.println("GC.stateChanged - jusque là tout va bien !");
 		model.setData(this.getCurrentData());
 		model.fireTableDataChanged();
 	}

@@ -19,6 +19,10 @@ public abstract class Dao<T>{
 	// provides a fully initialized element (in terms of index)
 	abstract public T newElement();
 	
+	// returns either an existing element (of the database)
+	// or creates a new one.
+	abstract public T anyElement();
+	
 	abstract public LinkedList<T> getData();
 
 }

@@ -1,12 +1,8 @@
 package gestionBilicence.general.dao;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 
-import javax.swing.JOptionPane;
-
-import org.postgresql.util.PSQLException;
+import gestionBilicence.edition.Semester;
 
 public class MySQLFactory extends AbstractDaoFactory {
 	/*
@@ -48,6 +44,18 @@ public class MySQLFactory extends AbstractDaoFactory {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public Dao<Semester> getSemesterDao() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public Dao getMarkDao() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	@Override
 	public Dao getDao(int i) {
@@ -56,9 +64,4 @@ public class MySQLFactory extends AbstractDaoFactory {
 		return null;
 	}
 
-	@Override
-	public AbstractSemesterDao getSemesterDao() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

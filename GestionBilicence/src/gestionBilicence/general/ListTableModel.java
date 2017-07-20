@@ -1,7 +1,10 @@
 package gestionBilicence.general;
 
+import java.text.NumberFormat;
 import java.util.LinkedList;
+import java.util.Locale;
 
+import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 
 import gestionBilicence.general.observer.Observer;
@@ -71,30 +74,16 @@ public class ListTableModel extends AbstractTableModel implements Observer{
 	public void updateObserver(LinkedList<Entity> currentData){
 		this.setData(currentData);
 	}
-	
+
 	public void addRow(){
 		gc.addRow(data);
 	}
-	
+
 	public void saveTable(){
 		gc.saveTable(data);
 	}
 
-	/*
-	  // fonction utilisée pour les champs numériques comme "Add (€)"
-	  public float convertStringToFloat(Object value){
-		  NumberFormat format = NumberFormat.getInstance(Locale.FRANCE);
-		  float val = 0.f;
-		  try{
-			  val = format.parse((String)value).floatValue();
-		  } catch (Exception e){
-			  e.printStackTrace();
-			  JOptionPane jop = new JOptionPane();
-			  jop.showMessageDialog(null, e.getMessage(),"ERREUR ds ZModel.convertStringToFloat",JOptionPane.ERROR_MESSAGE);
-		  }
-		  return val;
-	  }
-
+	  /*
 	  // fonction utilisée pour la date dans TransModel
 	  public static Date convertStringToDate(Object value){
 		  Date date = new Date(0);

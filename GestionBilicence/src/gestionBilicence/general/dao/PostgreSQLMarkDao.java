@@ -10,22 +10,25 @@ import java.util.LinkedList;
 import javax.swing.JOptionPane;
 
 import gestionBilicence.edition.Exams;
+import gestionBilicence.edition.Mark;
 import gestionBilicence.edition.Student;
+import gestionBilicence.general.GeneralController;
 
-public class PostgreSQLStudentDao extends Dao<Student> {
+public class PostgreSQLMarkDao extends Dao<Mark> {
 	
-	public PostgreSQLStudentDao(Connection conn){
+	public PostgreSQLMarkDao(Connection conn){
 		super();
 		this.conn = conn;
 	}
 
 	@Override
-	public boolean create(Student obj) {
+	public boolean create(Mark obj) {
 		try{
-			String query="INSERT INTO students(stud_firstname, stud_lastname) VALUES(?,?)";
+			String query="INSERT INTO Marks(id_exam, id_stud, mark) VALUES(?,?,?)";
 			PreparedStatement state = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-			state.setString(1, obj.getFirst_name());
-			state.setString(2, obj.getLast_name());
+			state.setInt(1, obj.getExam().getIndex());
+			state.setInt(2, obj.getStudent().getIndex());
+			state.setFloat(3, obj.getMark());
 			int nb_rows = state.executeUpdate();
 			
 			// Update of the index (should be 0 up to this point)
@@ -37,7 +40,7 @@ public class PostgreSQLStudentDao extends Dao<Student> {
 			return true;
 		} catch (SQLException e){
 			JOptionPane jop = new JOptionPane();
-			jop.showMessageDialog(null, e.getMessage(),"PostgreSQLStudentDao.create -- ERROR!",JOptionPane.ERROR_MESSAGE);
+			jop.showMessageDialog(null, e.getMessage(),"PostgreSQLMarkDao.create -- ERROR!",JOptionPane.ERROR_MESSAGE);
 			return false;
 		} catch (Exception e){
 			e.printStackTrace();
@@ -46,19 +49,20 @@ public class PostgreSQLStudentDao extends Dao<Student> {
 	}
 
 	@Override
-	public boolean update(Student obj) {
+	public boolean update(Mark obj) {
 		try{
-			String query="UPDATE students SET stud_firstname = ?, stud_lastname = ? WHERE id_stud = ?";
+			String query="UPDATE Marks SET id_exam = ?, id_stud = ?, mark = ? WHERE id_mark = ?";
 			PreparedStatement state = conn.prepareStatement(query,ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			state.setString(1, obj.getFirst_name());
-			state.setString(2, obj.getLast_name());
-			state.setInt(3, obj.getIndex());
+			state.setInt(1, obj.getExam().getIndex());
+			state.setInt(2, obj.getStudent().getIndex());
+			state.setFloat(3, obj.getMark());
+			state.setInt(4, obj.getIndex());
 			int nb_rows = state.executeUpdate();
 			state.close();
 			return true;
 		} catch (SQLException e){
 			JOptionPane jop = new JOptionPane();
-			jop.showMessageDialog(null, e.getMessage(),"PostgreSQLStudentDao.update -- ERROR!",JOptionPane.ERROR_MESSAGE);
+			jop.showMessageDialog(null, e.getMessage(),"PostgreSQLMarkDao.update -- ERROR!",JOptionPane.ERROR_MESSAGE);
 			return false;
 		} catch (Exception e){
 			e.printStackTrace();
@@ -67,9 +71,9 @@ public class PostgreSQLStudentDao extends Dao<Student> {
 	}
 
 	@Override
-	public boolean delete(Student obj) {
+	public boolean delete(Mark obj) {
 		try{
-			String query="DELETE FROM students WHERE id_stud = ?";
+			String query="DELETE FROM Marks WHERE id_mark = ?";
 			PreparedStatement state = conn.prepareStatement(query,ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			state.setInt(1, obj.getIndex());
 			int nb_rows = state.executeUpdate();
@@ -78,7 +82,7 @@ public class PostgreSQLStudentDao extends Dao<Student> {
 			return true;
 		} catch (SQLException e){
 			JOptionPane jop = new JOptionPane();
-			jop.showMessageDialog(null, e.getMessage(),"PostgreSQLStudentDao.delete -- ERROR!",JOptionPane.ERROR_MESSAGE);
+			jop.showMessageDialog(null, e.getMessage(),"PostgreSQLMarkDao.delete -- ERROR!",JOptionPane.ERROR_MESSAGE);
 			return false;
 		} catch (Exception e){
 			e.printStackTrace();
@@ -87,20 +91,27 @@ public class PostgreSQLStudentDao extends Dao<Student> {
 	}
 
 	@Override
-	public Student find(int index) {
+	public Mark find(int index) {
 		try{
-			String query="SELECT id_stud, stud_firstname, stud_lastname FROM students WHERE id_stud = ?";
+			String query="SELECT id_exam, id_stud, mark FROM marks WHERE id_mark = ?";
 			PreparedStatement state = conn.prepareStatement(query,ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			state.setInt(1, index);
 			ResultSet res = state.executeQuery();
 			res.first();
-			Student stud = new Student(res.getInt("id_stud"),res.getString("stud_firstname"),res.getString("stud_lastname"));
+			Exams exam = GeneralController.getInstance().getExamsDao().find(res.getInt("id_exam"));
+			Student stud = GeneralController.getInstance().getStudentDao().find(res.getInt("id_stud"));
+			Mark mark = new Mark(
+					index,
+					res.getFloat("mark"),
+					stud,
+					exam
+					);
 			res.close();
 			state.close();
-			return stud;
+			return mark;
 		} catch (SQLException e){
 			JOptionPane jop = new JOptionPane();
-			jop.showMessageDialog(null, e.getMessage(),"PostgreSQLStudentDao.find -- ERROR!",JOptionPane.ERROR_MESSAGE);
+			jop.showMessageDialog(null, e.getMessage(),"PostgreSQLMarkDao.find -- ERROR!",JOptionPane.ERROR_MESSAGE);
 			return null;
 		} catch (Exception e){
 			e.printStackTrace();
@@ -110,34 +121,37 @@ public class PostgreSQLStudentDao extends Dao<Student> {
 	
 	// Code to create a new element.
 	// NB: create updates the index
-	public Student newElement(){
-		Student stud = Student.defaultElement();
-		this.create(stud);
-		return stud;
+	public Mark newElement(){
+		Mark mark = Mark.defaultElement();
+		this.create(mark);
+		return mark;
 	}
 
 	
-	public LinkedList<Student> getData() {
-		LinkedList<Student> data = new LinkedList<Student>();
+	public LinkedList<Mark> getData() {
+		LinkedList<Mark> data = new LinkedList<Mark>();
 		try{
-			String query="SELECT id_stud, stud_firstname, stud_lastname FROM students ORDER BY id_stud";
+			String query="SELECT id_mark, id_exam, id_stud, mark FROM marks ORDER BY id_exam, id_stud";
 			PreparedStatement state = conn.prepareStatement(query,ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			ResultSet res = state.executeQuery();
 			while(res.next()){
-				Student stud = new Student(
-						res.getInt("id_stud"),
-						res.getString("stud_firstname"),
-						res.getString("stud_lastname")
+				Exams exam = GeneralController.getInstance().getExamsDao().find(res.getInt("id_exam"));
+				Student stud = GeneralController.getInstance().getStudentDao().find(res.getInt("id_stud"));
+				Mark mark = new Mark(
+						res.getInt("id_mark"),
+						res.getFloat("mark"),
+						stud,
+						exam
 						);
-				data.add(stud);
+				data.add(mark);
 			}
-			System.out.println("PostgreSQLStudentDao.getData(): found "+data.size()+" lines.");
+			System.out.println("PostgreSQLMarkDao.getData(): found "+data.size()+" lines.");
 			res.close();
 			state.close();
 			return data;
 		} catch (SQLException e){
 			JOptionPane jop = new JOptionPane();
-			jop.showMessageDialog(null, e.getMessage(),"PostgreSQLStudentDao.getData -- ERROR!",JOptionPane.ERROR_MESSAGE);
+			jop.showMessageDialog(null, e.getMessage(),"PostgreSQLMarkDao.getData -- ERROR!",JOptionPane.ERROR_MESSAGE);
 			return null;
 		} catch (Exception e){
 			e.printStackTrace();
@@ -146,23 +160,23 @@ public class PostgreSQLStudentDao extends Dao<Student> {
 	}
 
 	@Override
-	public Student anyElement(){
+	public Mark anyElement(){
 		try{
-			String query="SELECT id_stud, stud_firstname, stud_lastname FROM students ORDER BY id_stud LIMIT 1";
+			String query="SELECT id_mark, id_exam, id_stud, mark FROM marks ORDER BY id_mark LIMIT 1";
 			PreparedStatement state = conn.prepareStatement(query,ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			ResultSet res = state.executeQuery();
-			Student stud;
+			Mark mark;
 			if (res.first()){
-				stud = this.find(res.getInt("id_stud"));
+				mark = this.find(res.getInt("id_mark"));
 			} else {
-				stud = this.newElement();
+				mark = this.newElement();
 			}
 			res.close();
 			state.close();
-			return stud;
+			return mark;
 		} catch (SQLException e){
 			JOptionPane jop = new JOptionPane();
-			jop.showMessageDialog(null, e.getMessage(),"PostgreSQLStudentDao.anyElement -- ERROR!",JOptionPane.ERROR_MESSAGE);
+			jop.showMessageDialog(null, e.getMessage(),"PostgreSQLMarkDao.anyElement -- ERROR!",JOptionPane.ERROR_MESSAGE);
 			return null;
 		} catch (Exception e){
 			e.printStackTrace();

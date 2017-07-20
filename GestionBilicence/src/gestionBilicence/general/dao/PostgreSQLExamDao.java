@@ -14,9 +14,9 @@ import gestionBilicence.edition.Semester;
 import gestionBilicence.edition.Student;
 import gestionBilicence.general.GeneralController;
 
-public class PostgreSQLExamsDao extends Dao<Exams> {
+public class PostgreSQLExamDao extends Dao<Exams> {
 	
-	public PostgreSQLExamsDao(Connection conn){
+	public PostgreSQLExamDao(Connection conn){
 		super();
 		this.conn = conn;
 	}
@@ -124,6 +124,33 @@ public class PostgreSQLExamsDao extends Dao<Exams> {
 		Exams exam = Exams.defaultElement();
 		this.create(exam);
 		return exam;
+	}
+	
+	// Returns an element of type Semester
+	// either an already existing one or
+	// we create and initialize a new one in the database
+	public Exams anyElement(){
+		try{
+			String query="SELECT id_exam, name, id_semester, coefficient FROM exams ORDER BY id_exam LIMIT 1";
+			PreparedStatement state = conn.prepareStatement(query,ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			ResultSet res = state.executeQuery();
+			Exams exam;
+			if (res.first()){
+				exam = this.find(res.getInt("id_exam"));
+			} else {
+				exam = this.newElement();
+			}
+			res.close();
+			state.close();
+			return exam;
+		} catch (SQLException e){
+			JOptionPane jop = new JOptionPane();
+			jop.showMessageDialog(null, e.getMessage(),"PostgreSQLExamsDao.anyElement -- ERROR!",JOptionPane.ERROR_MESSAGE);
+			return null;
+		} catch (Exception e){
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	public LinkedList<Exams> getData() {

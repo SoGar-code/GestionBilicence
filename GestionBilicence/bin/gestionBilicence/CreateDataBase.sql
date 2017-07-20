@@ -32,7 +32,7 @@ create table marks(
 	id_mark serial primary key
 	, id_exam integer references exams
 	, id_stud integer references students
-	, mark integer
+	, mark numeric
 	);
 
 ------------------------------

@@ -1,6 +1,8 @@
 package gestionBilicence.general.dao;
 
 import gestionBilicence.edition.Exams;
+import gestionBilicence.edition.Mark;
+import gestionBilicence.edition.Semester;
 import gestionBilicence.edition.Student;
 import gestionBilicence.general.DialogConnection;
 
@@ -14,7 +16,9 @@ public abstract class AbstractDaoFactory {
 	
 	public abstract Dao<Exams> getExamsDao();
 	
-	public abstract AbstractSemesterDao getSemesterDao();
+	public abstract Dao<Semester> getSemesterDao();
+	
+	public abstract Dao<Mark> getMarkDao();
 	
 	// to get Dao class indexed by an integer
 	public Dao getDao(int i){
@@ -25,6 +29,8 @@ public abstract class AbstractDaoFactory {
 				return getExamsDao();
 			case 2:
 				return getSemesterDao();
+			case 3:
+				return getMarkDao();
 			default:
 				System.out.println("AbstractDaoFactory.getDao -- type not found!");
 				return null;

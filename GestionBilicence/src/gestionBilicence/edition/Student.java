@@ -63,6 +63,6 @@ public class Student extends Entity {
 	}
 
 	public String toString(){
-		return "Student id= "+this.index+", "+first_name+" "+last_name;
+		return first_name+" "+last_name;
 	}
 }
