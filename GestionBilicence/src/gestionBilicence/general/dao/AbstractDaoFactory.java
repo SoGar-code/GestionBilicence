@@ -5,6 +5,7 @@ import gestionBilicence.edition.Mark;
 import gestionBilicence.edition.Semester;
 import gestionBilicence.edition.Student;
 import gestionBilicence.general.DialogConnection;
+import gestionBilicence.general.dao.postgreSqlDao.PostgreSQLFactory;
 
 public abstract class AbstractDaoFactory {
 	/*
@@ -12,13 +13,13 @@ public abstract class AbstractDaoFactory {
 	 * Includes getDao(int i)
 	 */
 
-	public abstract Dao<Student> getStudentDao();
+	public abstract AbstractStudentDao getStudentDao();
 	
 	public abstract Dao<Exams> getExamsDao();
 	
 	public abstract Dao<Semester> getSemesterDao();
 	
-	public abstract Dao<Mark> getMarkDao();
+	public abstract AbstractMarkDao getMarkDao();
 	
 	// to get Dao class indexed by an integer
 	public Dao getDao(int i){

@@ -68,3 +68,7 @@ create table semester_ay(
 	, id_semester integer references semesters
 	, id_ay integer references acad_years
 	);
+	
+-- more extensions for students:
+-- date of birth
+-- e-mail address

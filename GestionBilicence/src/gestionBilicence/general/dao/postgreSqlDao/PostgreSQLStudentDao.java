@@ -1,4 +1,4 @@
-package gestionBilicence.general.dao;
+package gestionBilicence.general.dao.postgreSqlDao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,8 +11,9 @@ import javax.swing.JOptionPane;
 
 import gestionBilicence.edition.Exams;
 import gestionBilicence.edition.Student;
+import gestionBilicence.general.dao.AbstractStudentDao;
 
-public class PostgreSQLStudentDao extends Dao<Student> {
+public class PostgreSQLStudentDao extends AbstractStudentDao {
 	
 	public PostgreSQLStudentDao(Connection conn){
 		super();
@@ -120,7 +121,7 @@ public class PostgreSQLStudentDao extends Dao<Student> {
 	public LinkedList<Student> getData() {
 		LinkedList<Student> data = new LinkedList<Student>();
 		try{
-			String query="SELECT id_stud, stud_firstname, stud_lastname FROM students ORDER BY id_stud";
+			String query="SELECT id_stud, stud_firstname, stud_lastname FROM students ORDER BY stud_lastname";
 			PreparedStatement state = conn.prepareStatement(query,ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			ResultSet res = state.executeQuery();
 			while(res.next()){
@@ -169,5 +170,34 @@ public class PostgreSQLStudentDao extends Dao<Student> {
 			return null;
 		}
 	}
-
+	
+	public LinkedList<Student> getData(boolean inverseSort) {
+		LinkedList<Student> data = new LinkedList<Student>();
+		try{
+			String query="SELECT id_stud, stud_firstname, stud_lastname FROM students ORDER BY stud_lastname";
+					if (inverseSort)
+						query=query+" DESC";
+			PreparedStatement state = conn.prepareStatement(query,ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			ResultSet res = state.executeQuery();
+			while(res.next()){
+				Student stud = new Student(
+						res.getInt("id_stud"),
+						res.getString("stud_firstname"),
+						res.getString("stud_lastname")
+						);
+				data.add(stud);
+			}
+			System.out.println("PostgreSQLStudentDao.getData(): found "+data.size()+" lines.");
+			res.close();
+			state.close();
+			return data;
+		} catch (SQLException e){
+			JOptionPane jop = new JOptionPane();
+			jop.showMessageDialog(null, e.getMessage(),"PostgreSQLStudentDao.getData -- ERROR!",JOptionPane.ERROR_MESSAGE);
+			return null;
+		} catch (Exception e){
+			e.printStackTrace();
+			return null;
+		}
+	}
 }

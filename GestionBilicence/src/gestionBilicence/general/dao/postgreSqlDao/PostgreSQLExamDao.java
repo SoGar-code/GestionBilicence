@@ -1,4 +1,4 @@
-package gestionBilicence.general.dao;
+package gestionBilicence.general.dao.postgreSqlDao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,6 +13,7 @@ import gestionBilicence.edition.Exams;
 import gestionBilicence.edition.Semester;
 import gestionBilicence.edition.Student;
 import gestionBilicence.general.GeneralController;
+import gestionBilicence.general.dao.Dao;
 
 public class PostgreSQLExamDao extends Dao<Exams> {
 	

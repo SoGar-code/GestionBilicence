@@ -10,8 +10,8 @@ import javax.swing.event.ChangeListener;
 
 import gestionBilicence.edition.Exams;
 import gestionBilicence.edition.Semester;
-import gestionBilicence.edition.Student;
 import gestionBilicence.general.dao.AbstractDaoFactory;
+import gestionBilicence.general.dao.AbstractStudentDao;
 import gestionBilicence.general.dao.Dao;
 import gestionBilicence.general.observer.Observable;
 import gestionBilicence.general.observer.Observer;
@@ -103,7 +103,7 @@ public class GeneralController implements Observable, ChangeListener{
 	// management of Dao
 	//===================================
 
-	public Dao<Student> getStudentDao(){
+	public AbstractStudentDao getStudentDao(){
 		return df.getStudentDao();
 	}
 	

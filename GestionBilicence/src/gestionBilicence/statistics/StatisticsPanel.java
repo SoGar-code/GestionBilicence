@@ -1,6 +1,7 @@
 package gestionBilicence.statistics;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Panel;
 
 import javax.swing.BoxLayout;
@@ -78,5 +79,5 @@ public class StatisticsPanel extends Panel {
 	public void setMainTable(JTable mainTable) {
 		this.mainTable = mainTable;
 	}
-
+	
 }

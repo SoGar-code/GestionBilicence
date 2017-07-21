@@ -1,4 +1,4 @@
-package gestionBilicence.general.dao;
+package gestionBilicence.general.dao.postgreSqlDao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 
 import gestionBilicence.edition.Semester;
 import gestionBilicence.edition.Student;
+import gestionBilicence.general.dao.AbstractSemesterDao;
 
 public class PostgreSQLSemesterDao extends AbstractSemesterDao {
 	

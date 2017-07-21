@@ -63,6 +63,6 @@ public class Student extends Entity {
 	}
 
 	public String toString(){
-		return first_name+" "+last_name;
+		return last_name+" "+first_name;
 	}
 }

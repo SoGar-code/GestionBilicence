@@ -1,4 +1,4 @@
-package gestionBilicence.general.dao;
+package gestionBilicence.general.dao.postgreSqlDao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,8 +13,9 @@ import gestionBilicence.edition.Exams;
 import gestionBilicence.edition.Mark;
 import gestionBilicence.edition.Student;
 import gestionBilicence.general.GeneralController;
+import gestionBilicence.general.dao.AbstractMarkDao;
 
-public class PostgreSQLMarkDao extends Dao<Mark> {
+public class PostgreSQLMarkDao extends AbstractMarkDao {
 	
 	public PostgreSQLMarkDao(Connection conn){
 		super();
@@ -182,6 +183,12 @@ public class PostgreSQLMarkDao extends Dao<Mark> {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	@Override
+	public LinkedList<Mark> getDataStudent(Student stud) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
