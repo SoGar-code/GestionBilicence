@@ -2,17 +2,20 @@ package gestionBilicence.general;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import gestionBilicence.dao.AbstractDaoFactory;
+import gestionBilicence.dao.AbstractMarkDao;
+import gestionBilicence.dao.AbstractStudentDao;
+import gestionBilicence.dao.Dao;
 import gestionBilicence.edition.Exams;
 import gestionBilicence.edition.Semester;
-import gestionBilicence.general.dao.AbstractDaoFactory;
-import gestionBilicence.general.dao.AbstractStudentDao;
-import gestionBilicence.general.dao.Dao;
+import gestionBilicence.edition.Student;
 import gestionBilicence.general.observer.Observable;
 import gestionBilicence.general.observer.Observer;
 
@@ -27,12 +30,15 @@ public class GeneralController implements Observable, ChangeListener{
 	// Implicitly, df encodes which type of Database we are using in this instance.
 	private static AbstractDaoFactory df;
 	private int currentEntity=0;
+	private Student currentStudent=null;
+	private List<Semester> listCurrentSemester = new LinkedList<Semester>();
 	
 	private ArrayList<Observer> listObserver = new ArrayList<Observer>();
 	
 	private GeneralController(){
 		df = AbstractDaoFactory.getFactory();
 	}
+	
 	
 	public static GeneralController getInstance(){
 		return gc;
@@ -45,7 +51,7 @@ public class GeneralController implements Observable, ChangeListener{
 	public int getCurrentEntity() {
 		return this.currentEntity;
 	}
-
+	
 	public void removeRow(int position, LinkedList<Entity> currentData){
 		boolean test = this.getDao(currentEntity).delete(currentData.get(position));
 		if (test){
@@ -115,6 +121,10 @@ public class GeneralController implements Observable, ChangeListener{
 		return df.getSemesterDao();
 	}
 	
+	public AbstractMarkDao getMarkDao(){
+		return df.getMarkDao();
+	}
+	
 	public Dao<Entity> getDao(int i){
 		return df.getDao(i);
 	}
@@ -123,8 +133,8 @@ public class GeneralController implements Observable, ChangeListener{
 	// Listeners and observable
 	//=================================
 
-	// listener of the JTabbed pane
-	// (recovers the currentEntity)
+	// listener of JTabbedPane
+	// (recovers currentEntity)
 	@Override
 	public void stateChanged(ChangeEvent e) {
 		// NB: the source is the JTabbedPane in EditionWindow
@@ -154,4 +164,6 @@ public class GeneralController implements Observable, ChangeListener{
 		}
 	}
 
+	// NB: listeners for WestList (in different tabs of "Statistics")
+	// are in StudentAction and SemesterAction (see above)
 }

@@ -1,4 +1,4 @@
-package gestionBilicence.general.dao.postgreSqlDao;
+package gestionBilicence.dao.postgreSqlDao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,11 +9,11 @@ import java.util.LinkedList;
 
 import javax.swing.JOptionPane;
 
+import gestionBilicence.dao.Dao;
 import gestionBilicence.edition.Exams;
 import gestionBilicence.edition.Semester;
 import gestionBilicence.edition.Student;
 import gestionBilicence.general.GeneralController;
-import gestionBilicence.general.dao.Dao;
 
 public class PostgreSQLExamDao extends Dao<Exams> {
 	

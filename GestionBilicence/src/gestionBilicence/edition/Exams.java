@@ -1,8 +1,8 @@
 package gestionBilicence.edition;
 
+import gestionBilicence.dao.Dao;
 import gestionBilicence.general.Entity;
 import gestionBilicence.general.GeneralController;
-import gestionBilicence.general.dao.Dao;
 
 public class Exams extends Entity {
 	protected String name;

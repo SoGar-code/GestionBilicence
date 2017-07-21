@@ -1,12 +1,16 @@
 package gestionBilicence.general;
 
-import java.text.NumberFormat;
 import java.util.LinkedList;
-import java.util.Locale;
+import java.util.List;
 
-import javax.swing.JOptionPane;
+import javax.swing.JList;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 
+import gestionBilicence.edition.Mark;
+import gestionBilicence.edition.Semester;
+import gestionBilicence.edition.Student;
 import gestionBilicence.general.observer.Observer;
 
 public class ListTableModel extends AbstractTableModel implements Observer{
@@ -22,14 +26,22 @@ public class ListTableModel extends AbstractTableModel implements Observer{
 	protected Class[] listClass;
 	protected String[] title;
 	protected GeneralController gc = GeneralController.getInstance();
+	
+	// Listeners for Student and Semester (from "Statistics" part)
+	private StudentAction studAction;
+	private SemesterAction semesterAction;
 
 	public ListTableModel(Class[] listClass, String[]  title, LinkedList<Entity> data){
 		super();
 		this.data=data;
 		this.listClass=listClass;
 		this.title=title;
+		studAction = new StudentAction();
+		semesterAction = new SemesterAction();
 	}
 
+	// =====================================
+	// Getters and setters
 	public String getColumnName(int col) {
 		return this.title[col];
 	}
@@ -68,7 +80,7 @@ public class ListTableModel extends AbstractTableModel implements Observer{
 		this.data = data;
 		this.fireTableDataChanged();
 	}
-
+	
 	// data update, provided by Observer pattern 
 	//(data flowing from gc to the model)
 	public void updateObserver(LinkedList<Entity> currentData){
@@ -81,6 +93,54 @@ public class ListTableModel extends AbstractTableModel implements Observer{
 
 	public void saveTable(){
 		gc.saveTable(data);
+	}
+	
+	public StudentAction getStudentAction(){
+		return this.studAction;
+	}
+	
+	public SemesterAction getSemesterAction(){
+		return this.semesterAction;
+	}
+	
+	// (see StatisticsWindow) When selection in westList changes
+	// StudentAction identifies currentStudent
+	// and update data accordingly
+	class StudentAction implements ListSelectionListener{
+		@Override
+		public void valueChanged(ListSelectionEvent event) {
+			JList<Student> westList = (JList<Student>)event.getSource();
+			// deals with the case of an empty selection
+			try{
+				Student currentStudent = westList.getSelectedValue();
+				System.out.println("ListTableModel.StudentAction - current Student = "+currentStudent.toString());
+				LinkedList<Mark> listMark = gc.getMarkDao().getDataOnStudent(currentStudent);
+				
+				// Conversion problem from LinkedList<Mark> to LinkedList<Entity>,
+				// bypassed in brute force!
+				data = new LinkedList<Entity>();
+				for (Entity mark:listMark){
+					data.add(mark);
+				}
+				fireTableDataChanged();
+			} catch (NullPointerException e){
+				// no currentStudent detected?
+				System.out.println("ListTableModel.StudentAction - no current Student!");
+				data = new LinkedList<Entity>();
+				fireTableDataChanged();
+			}
+
+		}
+	}
+	
+	class SemesterAction implements ListSelectionListener{
+		@Override
+		public void valueChanged(ListSelectionEvent event) {
+			JList<Semester> westList = (JList<Semester>)event.getSource();
+			List<Semester> listCurrentSemester = westList.getSelectedValuesList();
+			
+			System.out.println("GC.SemesterAction - current Semesters contains "+listCurrentSemester.size()+" elements.");
+		}
 	}
 
 	  /*

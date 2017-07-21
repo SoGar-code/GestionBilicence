@@ -1,27 +1,18 @@
-package gestionBilicence.general.dao.postgreSqlDao;
+package gestionBilicence.dao;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-
-import javax.swing.JOptionPane;
-
-import org.postgresql.util.PSQLException;
 
 import gestionBilicence.edition.Exams;
 import gestionBilicence.edition.Semester;
-import gestionBilicence.general.dao.AbstractDaoFactory;
-import gestionBilicence.general.dao.AbstractMarkDao;
-import gestionBilicence.general.dao.AbstractStudentDao;
-import gestionBilicence.general.dao.Dao;
 
-public class PostgreSQLFactory extends AbstractDaoFactory {
+public class MySQLFactory extends AbstractDaoFactory {
 	/*
-	 * Create a connection to a PostgreSQL database
+	 * Create a connection to a MySQL database
 	 */
 	private static Connection conn;
 
-	public PostgreSQLFactory(String[] infoConn) {
+	public MySQLFactory(String[] infoConn) {
+		/*
 		try {
 	        Class.forName("org.postgresql.Driver");
 	        String url = "jdbc:postgresql://"+infoConn[2]+"/"+infoConn[3];
@@ -30,7 +21,6 @@ public class PostgreSQLFactory extends AbstractDaoFactory {
 	        conn = DriverManager.getConnection(url, user, passwd);
 	        // commits automatiques ou pas
 	        conn.setAutoCommit(true);
-			System.out.println("PostgreSQLFactory ready!");
 		} catch (ClassNotFoundException e) {
 	        e.printStackTrace();
 		} catch (PSQLException e){
@@ -40,25 +30,39 @@ public class PostgreSQLFactory extends AbstractDaoFactory {
 		} catch (SQLException e){
 			e.printStackTrace();
 		}
+		*/
+		System.out.println("MySQLFactory ready!");
 	}
 
 	@Override
 	public AbstractStudentDao getStudentDao() {
-		return new PostgreSQLStudentDao(conn);
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public Dao<Exams> getExamsDao() {
-		return new PostgreSQLExamDao(conn);
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	@Override
 	public Dao<Semester> getSemesterDao() {
-		return new PostgreSQLSemesterDao(conn);
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	@Override
 	public AbstractMarkDao getMarkDao() {
-		return new PostgreSQLMarkDao(conn);
+		// TODO Auto-generated method stub
+		return null;
 	}
+
+	@Override
+	public Dao getDao(int i) {
+		// Idea: make a switch over all possible entities
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

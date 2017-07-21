@@ -5,9 +5,9 @@ import java.util.Locale;
 
 import javax.swing.JOptionPane;
 
+import gestionBilicence.dao.Dao;
 import gestionBilicence.general.Entity;
 import gestionBilicence.general.GeneralController;
-import gestionBilicence.general.dao.Dao;
 
 public class Mark extends Entity {
 	protected Exams exam;

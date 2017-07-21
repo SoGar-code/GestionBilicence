@@ -1,4 +1,4 @@
-package gestionBilicence.general.dao.postgreSqlDao;
+package gestionBilicence.dao.postgreSqlDao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,11 +9,11 @@ import java.util.LinkedList;
 
 import javax.swing.JOptionPane;
 
+import gestionBilicence.dao.AbstractMarkDao;
 import gestionBilicence.edition.Exams;
 import gestionBilicence.edition.Mark;
 import gestionBilicence.edition.Student;
 import gestionBilicence.general.GeneralController;
-import gestionBilicence.general.dao.AbstractMarkDao;
 
 public class PostgreSQLMarkDao extends AbstractMarkDao {
 	
@@ -186,9 +186,35 @@ public class PostgreSQLMarkDao extends AbstractMarkDao {
 	}
 
 	@Override
-	public LinkedList<Mark> getDataStudent(Student stud) {
-		// TODO Auto-generated method stub
-		return null;
+	public LinkedList<Mark> getDataOnStudent(Student stud) {
+		LinkedList<Mark> data = new LinkedList<Mark>();
+		try{
+			String query="SELECT id_mark, id_exam, mark FROM marks WHERE id_stud = ? ORDER BY id_exam";
+			PreparedStatement state = conn.prepareStatement(query,ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			state.setInt(1, stud.getIndex());
+			ResultSet res = state.executeQuery();
+			while(res.next()){
+				Exams exam = GeneralController.getInstance().getExamsDao().find(res.getInt("id_exam"));
+				Mark mark = new Mark(
+						res.getInt("id_mark"),
+						res.getFloat("mark"),
+						stud,
+						exam
+						);
+				data.add(mark);
+			}
+			System.out.println("PostgreSQLMarkDao.getDataOnStudent: found "+data.size()+" lines.");
+			res.close();
+			state.close();
+			return data;
+		} catch (SQLException e){
+			JOptionPane jop = new JOptionPane();
+			jop.showMessageDialog(null, e.getMessage(),"PostgreSQLMarkDao.getDataOnStudent -- ERROR!",JOptionPane.ERROR_MESSAGE);
+			return null;
+		} catch (Exception e){
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 }

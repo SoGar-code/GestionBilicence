@@ -1,4 +1,4 @@
-package gestionBilicence.general.dao;
+package gestionBilicence.dao;
 
 import java.util.LinkedList;
 
@@ -12,5 +12,5 @@ public abstract class AbstractMarkDao extends Dao<Mark> {
 	// we create and initialize a new one in the database
 	public abstract Mark anyElement();
 	
-	public abstract LinkedList<Mark> getDataStudent(Student stud);
+	public abstract LinkedList<Mark> getDataOnStudent(Student stud);
 }

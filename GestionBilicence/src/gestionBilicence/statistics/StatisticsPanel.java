@@ -1,7 +1,6 @@
 package gestionBilicence.statistics;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.Panel;
 
 import javax.swing.BoxLayout;
@@ -12,7 +11,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
-import javax.swing.table.TableModel;
+
+import gestionBilicence.general.Entity;
+import gestionBilicence.general.GTable;
+import gestionBilicence.general.GeneralController;
+import gestionBilicence.general.ListTableModel;
 
 	/**
 	 * 
@@ -24,18 +27,20 @@ import javax.swing.table.TableModel;
 	 */
 
 public class StatisticsPanel extends Panel {
-	protected String textList;
 	protected JPanel westPan;
-	protected JTable mainTable;
+	protected JList<Entity> westList;
+	protected GTable mainTable;
 
-	public StatisticsPanel(ListModel listModel,TableModel tableModel) {
+	public StatisticsPanel(ListModel listModel,ListTableModel tableModel) {
 		super();
+		GeneralController gc = GeneralController.getInstance();
 		
 		// Definition of westPan
-		textList = "Select:";
+		String textList = "Select:";
 		JLabel westLabel = new JLabel(textList);
-		JList westList = new JList(listModel);
+		westList = new JList<Entity>(listModel);
 		westList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		
 		JScrollPane scrollPane0 = new JScrollPane(westList);
 		scrollPane0.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane0.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -46,22 +51,11 @@ public class StatisticsPanel extends Panel {
 		westPan.add(scrollPane0);
 		
 		// Definition of the central panel
-		mainTable = new JTable(tableModel);
-		JScrollPane scrollPane1 = new JScrollPane(mainTable);
-		scrollPane1.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		mainTable = new GTable(tableModel);
 		
 		this.setLayout(new BorderLayout());
-		this.add(scrollPane1, BorderLayout.CENTER);
+		this.add(mainTable, BorderLayout.CENTER);
 		this.add(westPan, BorderLayout.WEST);
-	}
-
-	public String getTextList() {
-		return textList;
-	}
-
-	public void setTextList(String textList) {
-		this.textList = textList;
 	}
 
 	public JPanel getWestPan() {
@@ -72,12 +66,15 @@ public class StatisticsPanel extends Panel {
 		this.westPan = westPan;
 	}
 
-	public JTable getMainTable() {
+	public GTable getMainTable() {
 		return mainTable;
 	}
 
-	public void setMainTable(JTable mainTable) {
+	public void setMainTable(GTable mainTable) {
 		this.mainTable = mainTable;
 	}
 	
+	public JList<Entity> getWestList() {
+		return westList;
+	}
 }

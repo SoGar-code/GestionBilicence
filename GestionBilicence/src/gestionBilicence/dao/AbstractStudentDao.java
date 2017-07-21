@@ -1,4 +1,4 @@
-package gestionBilicence.general.dao;
+package gestionBilicence.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,10 +12,12 @@ import javax.swing.JOptionPane;
 import gestionBilicence.edition.Semester;
 import gestionBilicence.edition.Student;
 
-public abstract class AbstractSemesterDao extends Dao<Semester> {
+public abstract class AbstractStudentDao extends Dao<Student> {
 	
 	// Returns an element of type Semester
 	// either an already existing one or
 	// we create and initialize a new one in the database
-	public abstract Semester anyElement();
+	public abstract Student anyElement();
+	
+	public abstract LinkedList<Student> getData(boolean inverseSort);
 }
