@@ -23,7 +23,7 @@ public class FloatEditor extends DefaultCellEditor {
 
 	        if (value instanceof Number){
 
-	            NumberFormat numberFormatB = NumberFormat.getInstance(Locale.FRANCE);
+	            NumberFormat numberFormatB = NumberFormat.getInstance(Locale.UK);
 	            numberFormatB.setMaximumFractionDigits(nbDecimals);
 	            numberFormatB.setMinimumFractionDigits(nbDecimals);
 	            numberFormatB.setMinimumIntegerDigits(1);

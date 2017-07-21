@@ -31,7 +31,7 @@ public class FloatRenderer extends JLabel implements TableCellRenderer {
 		try{
 			float updatedVal=(float)table.getModel().getValueAt(row, column);
 			
-            NumberFormat numberFormatB = NumberFormat.getInstance(Locale.FRANCE);
+            NumberFormat numberFormatB = NumberFormat.getInstance(Locale.UK);
             numberFormatB.setMaximumFractionDigits(nbDecimals);
             numberFormatB.setMinimumFractionDigits(nbDecimals);
             numberFormatB.setMinimumIntegerDigits(1);
