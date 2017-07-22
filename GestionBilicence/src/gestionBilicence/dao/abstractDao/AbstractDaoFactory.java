@@ -1,5 +1,9 @@
-package gestionBilicence.dao;
+package gestionBilicence.dao.abstractDao;
 
+import javax.swing.JOptionPane;
+
+import gestionBilicence.dao.Dao;
+import gestionBilicence.dao.MySQLFactory;
 import gestionBilicence.dao.postgreSqlDao.PostgreSQLFactory;
 import gestionBilicence.edition.Exams;
 import gestionBilicence.edition.Mark;
@@ -15,7 +19,7 @@ public abstract class AbstractDaoFactory {
 
 	public abstract AbstractStudentDao getStudentDao();
 	
-	public abstract Dao<Exams> getExamsDao();
+	public abstract AbstractExamsDao getExamsDao();
 	
 	public abstract Dao<Semester> getSemesterDao();
 	
@@ -47,11 +51,13 @@ public abstract class AbstractDaoFactory {
 		if (new String("testbilicence").equals(infoConn[3])){
 			return new PostgreSQLFactory(infoConn);
 		}
-		else if (new String("mysql").equals(infoConn[3])){
-			return new MySQLFactory(infoConn);
+		else if (new String("testfranzi").equals(infoConn[3])){
+			return new PostgreSQLFactory(infoConn);
 		}
 		else {
-			System.out.println("AbstractDaoFactory.getFactory() -- string pas reconnu");			
+			System.out.println("AbstractDaoFactory.getFactory() -- unknown database");
+			JOptionPane jop = new JOptionPane();
+			jop.showMessageDialog(null, null,"AbstractDaoFactory.getFactory() -- unknown database!",JOptionPane.ERROR_MESSAGE);
 			return null;			
 		}
 

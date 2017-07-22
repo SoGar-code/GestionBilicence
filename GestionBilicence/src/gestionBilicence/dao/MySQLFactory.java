@@ -2,7 +2,10 @@ package gestionBilicence.dao;
 
 import java.sql.Connection;
 
-import gestionBilicence.edition.Exams;
+import gestionBilicence.dao.abstractDao.AbstractDaoFactory;
+import gestionBilicence.dao.abstractDao.AbstractExamsDao;
+import gestionBilicence.dao.abstractDao.AbstractMarkDao;
+import gestionBilicence.dao.abstractDao.AbstractStudentDao;
 import gestionBilicence.edition.Semester;
 
 public class MySQLFactory extends AbstractDaoFactory {
@@ -41,7 +44,7 @@ public class MySQLFactory extends AbstractDaoFactory {
 	}
 
 	@Override
-	public Dao<Exams> getExamsDao() {
+	public AbstractExamsDao getExamsDao() {
 		// TODO Auto-generated method stub
 		return null;
 	}

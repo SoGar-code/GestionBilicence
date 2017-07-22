@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.util.LinkedList;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
 import javax.swing.ListSelectionModel;
 
@@ -14,7 +15,6 @@ import gestionBilicence.general.Entity;
 import gestionBilicence.general.GeneralController;
 import gestionBilicence.general.GeneralWindow;
 import gestionBilicence.general.ListTableModel;
-import gestionBilicence.general.editorsRenderers.Delete;
 
 public class StatisticsWindow extends GeneralWindow {
 	/*
@@ -54,8 +54,11 @@ public class StatisticsWindow extends GeneralWindow {
         updateListSemester();
 		StatisticsPanel tabAverage = new StatisticsPanel(listSemester, tableModelVect[1]);
 		tabAverage.getWestList().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		WeightPanel weightPan = new WeightPanel();
+		tabAverage.getWestPan().add(weightPan);
 		// add listener on currentSemester
 		tabAverage.getWestList().addListSelectionListener(tableModelVect[1].getSemesterAction());
+		tabAverage.getWestList().addListSelectionListener(weightPan);
 
 		// ====================================
 		// tabRate: success rate (on selected semesters?)

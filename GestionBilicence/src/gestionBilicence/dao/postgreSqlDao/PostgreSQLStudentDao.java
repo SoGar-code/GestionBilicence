@@ -9,7 +9,7 @@ import java.util.LinkedList;
 
 import javax.swing.JOptionPane;
 
-import gestionBilicence.dao.AbstractStudentDao;
+import gestionBilicence.dao.abstractDao.AbstractStudentDao;
 import gestionBilicence.edition.Exams;
 import gestionBilicence.edition.Student;
 

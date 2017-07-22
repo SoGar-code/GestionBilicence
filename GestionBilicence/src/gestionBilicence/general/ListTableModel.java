@@ -12,6 +12,7 @@ import gestionBilicence.edition.Mark;
 import gestionBilicence.edition.Semester;
 import gestionBilicence.edition.Student;
 import gestionBilicence.general.observer.Observer;
+import gestionBilicence.statistics.Average;
 
 public class ListTableModel extends AbstractTableModel implements Observer{
 	  /*
@@ -140,6 +141,15 @@ public class ListTableModel extends AbstractTableModel implements Observer{
 			List<Semester> listCurrentSemester = westList.getSelectedValuesList();
 			
 			System.out.println("GC.SemesterAction - current Semesters contains "+listCurrentSemester.size()+" elements.");
+			
+			LinkedList<Average> listAverage = gc.getMarkDao().getAverage(listCurrentSemester);
+			// Conversion problem from LinkedList<Mark> to LinkedList<Entity>,
+			// bypassed in brute force!
+			data = new LinkedList<Entity>();
+			for (Entity average:listAverage){
+				data.add(average);
+			}
+			fireTableDataChanged();
 		}
 	}
 

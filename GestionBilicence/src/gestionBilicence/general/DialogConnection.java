@@ -45,7 +45,7 @@ public class DialogConnection extends JDialog{
 		
 		// Chosing databases:
 		JLabel dbLabel = new JLabel("Database:");
-		JComboBox<String> dbCombo = new JComboBox<String>(new String[]{"testbilicence","mysql"});
+		JComboBox<String> dbCombo = new JComboBox<String>(new String[]{"testbilicence","testfranzi"});
 		
 		// User:
 		JLabel userLabel = new JLabel("User:");

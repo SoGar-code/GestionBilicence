@@ -1,21 +1,22 @@
 package gestionBilicence.dao.postgreSqlDao;
 
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import gestionBilicence.dao.Dao;
+import gestionBilicence.dao.abstractDao.AbstractExamsDao;
 import gestionBilicence.edition.Exams;
 import gestionBilicence.edition.Semester;
-import gestionBilicence.edition.Student;
 import gestionBilicence.general.GeneralController;
 
-public class PostgreSQLExamDao extends Dao<Exams> {
+public class PostgreSQLExamDao extends AbstractExamsDao {
 	
 	public PostgreSQLExamDao(Connection conn){
 		super();
@@ -181,6 +182,39 @@ public class PostgreSQLExamDao extends Dao<Exams> {
 		} catch (Exception e){
 			e.printStackTrace();
 			return null;
+		}
+	}
+
+	@Override
+	public float getTotalWeight(List<Semester> listCurrentSemester) {
+		float totalWeight;
+		try{
+			String query="SELECT SUM(coefficient) AS totalweight FROM exams "
+					+ " WHERE id_semester = ANY(?) ";
+			PreparedStatement state = conn.prepareStatement(query);
+			int nb = listCurrentSemester.size();
+			Object[] listInt = new Object[nb];
+			int i = 0;
+			for (Semester semester:listCurrentSemester){
+				listInt[i] = semester.getIndex();
+				i++;
+			}
+			Array array = conn.createArrayOf("INTEGER",listInt);
+			state.setArray(1, array);
+			ResultSet res = state.executeQuery();
+			res.next();
+			totalWeight = res.getFloat("totalweight");
+			System.out.println("PostgreSQLExamsDao.getTotalWeight(): "+totalWeight);
+			res.close();
+			state.close();
+			return totalWeight;
+		} catch (SQLException e){
+			JOptionPane jop = new JOptionPane();
+			jop.showMessageDialog(null, e.getMessage(),"PostgreSQLExamsDao.getTotalWeight -- ERROR!",JOptionPane.ERROR_MESSAGE);
+			return 0;
+		} catch (Exception e){
+			e.printStackTrace();
+			return 0;
 		}
 	};
 

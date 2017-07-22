@@ -9,29 +9,29 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import gestionBilicence.dao.AbstractDaoFactory;
-import gestionBilicence.dao.AbstractMarkDao;
-import gestionBilicence.dao.AbstractStudentDao;
 import gestionBilicence.dao.Dao;
-import gestionBilicence.edition.Exams;
+import gestionBilicence.dao.abstractDao.AbstractDaoFactory;
+import gestionBilicence.dao.abstractDao.AbstractExamsDao;
+import gestionBilicence.dao.abstractDao.AbstractMarkDao;
+import gestionBilicence.dao.abstractDao.AbstractStudentDao;
 import gestionBilicence.edition.Semester;
 import gestionBilicence.edition.Student;
 import gestionBilicence.general.observer.Observable;
 import gestionBilicence.general.observer.Observer;
 
-public class GeneralController implements Observable, ChangeListener{
-	/*
+	/**
 	 * A class used to store data regarding the current state of the interface
 	 * (e.g. currentEntity).
 	 * Doubles as a singleton class giving access to the different Dao classes.
 	 */
+
+public class GeneralController implements Observable, ChangeListener{
+
 	
 	private static GeneralController gc = new GeneralController();
 	// Implicitly, df encodes which type of Database we are using in this instance.
 	private static AbstractDaoFactory df;
 	private int currentEntity=0;
-	private Student currentStudent=null;
-	private List<Semester> listCurrentSemester = new LinkedList<Semester>();
 	
 	private ArrayList<Observer> listObserver = new ArrayList<Observer>();
 	
@@ -113,7 +113,7 @@ public class GeneralController implements Observable, ChangeListener{
 		return df.getStudentDao();
 	}
 	
-	public Dao<Exams> getExamsDao(){
+	public AbstractExamsDao getExamsDao(){
 		return df.getExamsDao();
 	}
 	

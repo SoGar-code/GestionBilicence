@@ -1,19 +1,23 @@
 package gestionBilicence.dao.postgreSqlDao;
 
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import gestionBilicence.dao.AbstractMarkDao;
+import gestionBilicence.dao.abstractDao.AbstractMarkDao;
 import gestionBilicence.edition.Exams;
 import gestionBilicence.edition.Mark;
+import gestionBilicence.edition.Semester;
 import gestionBilicence.edition.Student;
 import gestionBilicence.general.GeneralController;
+import gestionBilicence.statistics.Average;
 
 public class PostgreSQLMarkDao extends AbstractMarkDao {
 	
@@ -210,6 +214,54 @@ public class PostgreSQLMarkDao extends AbstractMarkDao {
 		} catch (SQLException e){
 			JOptionPane jop = new JOptionPane();
 			jop.showMessageDialog(null, e.getMessage(),"PostgreSQLMarkDao.getDataOnStudent -- ERROR!",JOptionPane.ERROR_MESSAGE);
+			return null;
+		} catch (Exception e){
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@Override
+	public LinkedList<Average> getAverage(List<Semester> listCurrentSemester) {
+		float totalWeight = GeneralController.getInstance().getExamsDao().getTotalWeight(listCurrentSemester);
+		LinkedList<Average> data = new LinkedList<Average>();
+		try{
+			// a view containing all required information
+			String query0 = "SELECT id_stud, exams.id_exam, coefficient, mark from marks, exams "
+					+ " WHERE marks.id_exam = exams.id_exam AND "
+					+ " id_semester = ANY(?) ";
+			String query="SELECT id_stud, SUM(mark*coefficient)/? AS average FROM ( "+query0+" ) AS view "
+					+ " GROUP BY id_stud ";
+			PreparedStatement state = conn.prepareStatement(query);
+			
+			int nb = listCurrentSemester.size();
+			Object[] listInt = new Object[nb];
+			int i = 0;
+			for (Semester semester:listCurrentSemester){
+				listInt[i] = semester.getIndex();
+				i++;
+			}
+			Array array = conn.createArrayOf("INTEGER",listInt);
+			
+			// nesting of Strings => order perturbed 
+			state.setFloat(1, totalWeight);
+			state.setArray(2, array);
+			ResultSet res = state.executeQuery();
+			while(res.next()){
+				Student stud = GeneralController.getInstance().getStudentDao().find(res.getInt("id_stud"));
+				Average average = new Average(
+						stud,
+						res.getFloat("average")
+						);
+				data.add(average);
+			}
+			System.out.println("PostgreSQLMarkDao.getAverage: found "+data.size()+" lines.");
+			res.close();
+			state.close();
+			return data;
+		} catch (SQLException e){
+			JOptionPane jop = new JOptionPane();
+			jop.showMessageDialog(null, e.getMessage(),"PostgreSQLExamsDao.getAverage -- ERROR!",JOptionPane.ERROR_MESSAGE);
 			return null;
 		} catch (Exception e){
 			e.printStackTrace();
