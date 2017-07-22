@@ -3,3 +3,6 @@ GestionBilicence/.*
 
 # avoid bin folder
 GestionBilicence/bin*
+
+# avoid csv files:
+*.csv

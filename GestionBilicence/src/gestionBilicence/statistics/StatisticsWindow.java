@@ -22,13 +22,19 @@ public class StatisticsWindow extends GeneralWindow {
 	 */
 	private GeneralController gc = GeneralController.getInstance();
 	private DefaultListModel<Student> listStudent;
-	private DefaultListModel<Semester> listSemester;
+	private DefaultListModel<Semester> listSemester1;
+	private DefaultListModel<Semester> listSemester2;
 	private ListTableModel[] tableModelVect = new ListTableModel[3];
 	
 	private JTabbedPane tabbedPane;
 
 	public StatisticsWindow(){
 		super();
+		System.out.println("StatisticsWindow initialized");
+		
+		// Initialize listSemesterVect
+
+
 		    
 		// ====================================
 		// tabEvolution: all marks per student
@@ -42,7 +48,8 @@ public class StatisticsWindow extends GeneralWindow {
 		StatisticsPanel tabEvolution = new StatisticsPanel(listStudent, tableModelVect[0]);
 		// add listener on currentStudent (NB: listener in ListTableModel!)
 		tabEvolution.getWestList().addListSelectionListener(tableModelVect[0].getStudentAction());
-
+		System.out.println("StatisticsWindow - tabEvolution done");
+		
 		// ====================================
 		// tabAverage: average per student (on selected semesters)
         tableModelVect[1] = new ListTableModel(
@@ -50,9 +57,8 @@ public class StatisticsWindow extends GeneralWindow {
         		new String[] {"Student","Average"},
         		new LinkedList<Entity>()
         		);
-        listSemester = new DefaultListModel<Semester>();
-        updateListSemester();
-		StatisticsPanel tabAverage = new StatisticsPanel(listSemester, tableModelVect[1]);
+		listSemester1 = new DefaultListModel<Semester>();
+		StatisticsPanel tabAverage = new StatisticsPanel(listSemester1, tableModelVect[1]);
 		tabAverage.getWestList().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		WeightPanel weightPan = new WeightPanel();
 		tabAverage.getWestPan().add(weightPan);
@@ -67,12 +73,13 @@ public class StatisticsWindow extends GeneralWindow {
         		new String[] {"Semester","Average"},
         		new LinkedList<Entity>()
         		);
-        listSemester = new DefaultListModel<Semester>();
-        updateListSemester();
-		StatisticsPanel tabRate = new StatisticsPanel(listSemester, tableModelVect[2]);
+		listSemester2 = new DefaultListModel<Semester>();
+		StatisticsPanel tabRate = new StatisticsPanel(listSemester2, tableModelVect[2]);
 		tabRate.getWestList().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		// add listener on currentSemester
 		tabRate.getWestList().addListSelectionListener(tableModelVect[2].getSemesterAction());
+		
+		updateListSemester();
 
 		// final assembly of tabbedPane
 		tabbedPane = new JTabbedPane();
@@ -90,10 +97,13 @@ public class StatisticsWindow extends GeneralWindow {
 	}
 	
 	public void updateListSemester(){
-		listSemester.removeAllElements();
+		listSemester1.removeAllElements();
+		listSemester2.removeAllElements();
+		
         LinkedList<Semester> dataSemester = gc.getSemesterDao().getData();
         for(Semester semester:dataSemester){
-        	listSemester.addElement(semester);
+        	listSemester1.addElement(semester);
+        	listSemester2.addElement(semester);
         }
 	}
 	

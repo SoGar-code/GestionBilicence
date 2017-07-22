@@ -112,14 +112,14 @@ public class GeneralController implements Observable, ChangeListener{
 	public AbstractStudentDao getStudentDao(){
 		return df.getStudentDao();
 	}
-	
-	public AbstractExamsDao getExamsDao(){
-		return df.getExamsDao();
-	}
-	
+
 	public Dao<Semester> getSemesterDao(){
 		return df.getSemesterDao();
 	}
+	
+	public AbstractExamsDao getExamsDao(){
+		return df.getExamsDao();
+	}	
 	
 	public AbstractMarkDao getMarkDao(){
 		return df.getMarkDao();

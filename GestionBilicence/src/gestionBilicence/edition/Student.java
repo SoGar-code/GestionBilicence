@@ -59,7 +59,7 @@ public class Student extends Entity {
 	}
 	
 	public static Student defaultElement(){
-		return new Student("Jean","Par Défaut");
+		return new Student("Jean","Défaut");
 	}
 
 	public String toString(){

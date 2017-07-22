@@ -34,7 +34,15 @@ public class GTable extends JScrollPane{
 		super();
 		this.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		this.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-		table = new JTable(model);
+		table = new JTable(){
+            public void changeSelection(final int row, final int column, boolean toggle, boolean extend)
+            {
+                super.changeSelection(row, column, toggle, extend);
+                table.editCellAt(row, column);
+                table.transferFocus();
+            }
+		};
+		table.setModel(model);
 		
 		table.setRowHeight(30);
 	    //==================================
@@ -111,4 +119,5 @@ public class GTable extends JScrollPane{
 				break;
 		}
 	}
+	
 }

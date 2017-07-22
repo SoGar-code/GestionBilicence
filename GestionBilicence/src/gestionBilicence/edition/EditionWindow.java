@@ -55,19 +55,19 @@ public class EditionWindow extends GeneralWindow {
 		gc.addObserver(listTableModelVect[0]);
 		tabEntityVect[0] = new GTable(listTableModelVect[0]);
 		
-		// Creation of exams tab:
+		// Creation of semester tab:
 		listTableModelVect[1] = new ListTableModel(
-				new Class[] {String.class, Semester.class, Integer.class,Delete.class},
-				new String[] {"Name","Semester","Coefficient", "Delete"},
+				new Class[] {String.class, Delete.class},
+				new String[] {"Name","Delete"},
 				new LinkedList<Entity>()
 				);
 		gc.addObserver(listTableModelVect[1]);
 		tabEntityVect[1] = new GTable(listTableModelVect[1]);
 		
-		// Creation of semester tab:
+		// Creation of exams tab:
 		listTableModelVect[2] = new ListTableModel(
-				new Class[] {String.class, Delete.class},
-				new String[] {"Name","Delete"},
+				new Class[] {String.class, Semester.class, Integer.class,Delete.class},
+				new String[] {"Name","Semester","Coefficient", "Delete"},
 				new LinkedList<Entity>()
 				);
 		gc.addObserver(listTableModelVect[2]);
@@ -84,7 +84,7 @@ public class EditionWindow extends GeneralWindow {
 		
 		// Final assembly into a tabbed panel.
 		tabbedPane = new JTabbedPane();
-		String[] listTabs = {"Students","Exams","Semesters","Marks"};
+		String[] listTabs = {"Students","Semesters","Exams","Marks"};
 		for (int i = 0; i <= 3; i++){
 			tabbedPane.addTab(listTabs[i],tabEntityVect[i]);
 		}
@@ -113,14 +113,14 @@ public class EditionWindow extends GeneralWindow {
 			public void actionPerformed(ActionEvent event){
 				((GTable) tabbedPane.getSelectedComponent()).getModel().saveTable();
 				
-				// if currentEntity == 0 or 1, notify the Marks tab
-				Set<Integer> indices = new HashSet<Integer>(Arrays.asList(0,1));
+				// if currentEntity == 0 or 2, notify the Marks tab
+				Set<Integer> indices = new HashSet<Integer>(Arrays.asList(0,2));
 				int currentEntity = tabbedPane.getSelectedIndex();
 				if (indices.contains(currentEntity)){
 					((GTable) tabbedPane.getComponent(3)).updateCombo(currentEntity);
 				}
-				// currentEntity == 2 i.e. Semesters
-				if (currentEntity==2){
+				// currentEntity == 1 i.e. Semesters
+				if (currentEntity==1){
 					// update comboSemester for Exams and Marks tab
 					((GTable) tabbedPane.getComponent(1)).updateComboSemester();
 					((GTable) tabbedPane.getComponent(3)).updateComboSemester();

@@ -31,9 +31,9 @@ public abstract class AbstractDaoFactory {
 			case 0:
 				return getStudentDao();
 			case 1:
-				return getExamsDao();
-			case 2:
 				return getSemesterDao();
+			case 2:
+				return getExamsDao();
 			case 3:
 				return getMarkDao();
 			default:
