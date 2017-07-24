@@ -9,7 +9,7 @@ import gestionBilicence.edition.Exams;
 import gestionBilicence.edition.Mark;
 import gestionBilicence.edition.Semester;
 import gestionBilicence.edition.Student;
-import gestionBilicence.general.DialogConnection;
+import gestionBilicence.general.ConnectionDialog;
 
 public abstract class AbstractDaoFactory {
 	/*
@@ -43,8 +43,8 @@ public abstract class AbstractDaoFactory {
 	}
 	
 	public static AbstractDaoFactory getFactory(){
-		DialogConnection dialogConn = new DialogConnection();
-		String[] infoConn = dialogConn.showDialogConnection();
+		ConnectionDialog dialogConn = new ConnectionDialog();
+		String[] infoConn = dialogConn.showConnectionDialog();
 		
 		// Compare with available options in DialogConnection
 		// Deduce what kind of Database is used

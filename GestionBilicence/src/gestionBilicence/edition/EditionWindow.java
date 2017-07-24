@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
+import gestionBilicence.general.ConnectionDialog;
 import gestionBilicence.general.Entity;
 import gestionBilicence.general.GTable;
 import gestionBilicence.general.GeneralWindow;
@@ -32,6 +33,7 @@ public class EditionWindow extends GeneralWindow {
 	private JPanel pan;
 	private JButton saveButton;
 	private JButton newLineButton;
+	private JButton editButton;
 	private JTabbedPane tabbedPane;
 
 	public EditionWindow(){
@@ -96,6 +98,7 @@ public class EditionWindow extends GeneralWindow {
 		// Buttons and listeners
 		//======================
 		newLineButton = new JButton("New line");
+		editButton = new JButton("Edit/More info");
 		saveButton = new JButton("Save/update");
 	    
 		// Keeping the listeners as generic as possible
@@ -105,6 +108,19 @@ public class EditionWindow extends GeneralWindow {
 		class AddListener implements ActionListener{
 			public void actionPerformed(ActionEvent event){
 				((GTable) tabbedPane.getSelectedComponent()).getModel().addRow();
+			}
+		}
+		
+		// listener on the "Edit" button
+		class EditListener implements ActionListener{
+			public void actionPerformed(ActionEvent event){
+				int currentEntity = tabbedPane.getSelectedIndex();
+				// currentEntity==0 corresponds to Student
+				if (currentEntity==0){
+					EditStudentDialog studDialog = new EditStudentDialog();
+					studDialog.showEditStudentDialog();
+				}
+				//((GTable) tabbedPane.getSelectedComponent()).getModel().addRow();
 			}
 		}
 		
@@ -129,6 +145,7 @@ public class EditionWindow extends GeneralWindow {
 		}
 	    
 	    newLineButton.addActionListener(new AddListener());
+	    editButton.addActionListener(new EditListener());
 	    saveButton.addActionListener(new SaveListener());
 		
 		
@@ -141,6 +158,7 @@ public class EditionWindow extends GeneralWindow {
 	    gl.setHgap(5);
 	    pan = new JPanel(gl);
 	    pan.add(newLineButton);
+	    pan.add(editButton);
 	    pan.add(saveButton);
 		
 		this.setLayout(new BorderLayout());

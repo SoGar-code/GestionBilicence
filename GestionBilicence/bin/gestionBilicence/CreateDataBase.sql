@@ -32,7 +32,7 @@ create table marks(
 	id_mark serial primary key
 	, id_exam integer references exams
 	, id_stud integer references students
-	, mark numeric
+	, mark integer
 	);
 
 ------------------------------
@@ -68,7 +68,3 @@ create table semester_ay(
 	, id_semester integer references semesters
 	, id_ay integer references acad_years
 	);
-	
--- more extensions for students:
--- date of birth
--- e-mail address
