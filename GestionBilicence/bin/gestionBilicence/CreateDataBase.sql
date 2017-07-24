@@ -39,10 +39,23 @@ create table marks(
 -- part 2, additional info
 ------------------------------
 
+-- NB: despite their names, stud_num and stud_apb are texts (i.e. Strings)
 create table stud_num(
 	id_stud_num serial primary key
 	, id_stud integer references students
-	, stud_number integer
+	, stud_number text
+	);
+
+create table stud_email(
+	id_stud_email serial primary key
+	, id_stud integer references students
+	, email text
+	);
+	
+create table stud_apb(
+	id_stud_apb serial primary key
+	, id_stud integer references students
+	, stud_apb text
 	);
 
 -- subjects like English, History, ...
@@ -68,3 +81,4 @@ create table semester_ay(
 	, id_semester integer references semesters
 	, id_ay integer references acad_years
 	);
+	

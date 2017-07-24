@@ -8,6 +8,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 
+import gestionBilicence.edition.EditStudentDialog;
+import gestionBilicence.edition.ExtraInfoStudent;
 import gestionBilicence.edition.Mark;
 import gestionBilicence.edition.Semester;
 import gestionBilicence.edition.Student;
@@ -94,6 +96,17 @@ public class ListTableModel extends AbstractTableModel implements Observer{
 
 	public void saveTable(){
 		gc.saveTable(data);
+	}
+	
+	public void removeRow(int row){
+		gc.removeRow(row,data);
+	}
+	
+	public void editRow(int row){
+		Student stud = (Student)data.get(row);
+		EditStudentDialog studDialog = new EditStudentDialog(stud);
+		ExtraInfoStudent info = studDialog.showEditStudentDialog();
+		gc.getStudentDao().updateInfo(stud, info);
 	}
 	
 	public StudentAction getStudentAction(){

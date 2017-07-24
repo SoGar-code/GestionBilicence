@@ -12,8 +12,10 @@ import gestionBilicence.edition.Exams;
 import gestionBilicence.edition.Semester;
 import gestionBilicence.edition.Student;
 import gestionBilicence.general.editorsRenderers.ButtonDeleteEditor;
+import gestionBilicence.general.editorsRenderers.ButtonEditEditor;
 import gestionBilicence.general.editorsRenderers.ButtonRenderer;
 import gestionBilicence.general.editorsRenderers.Delete;
+import gestionBilicence.general.editorsRenderers.Edit;
 import gestionBilicence.general.editorsRenderers.FloatEditor;
 import gestionBilicence.general.editorsRenderers.FloatRenderer;
 
@@ -48,8 +50,14 @@ public class GTable extends JScrollPane{
 	    //==================================
 	    // Custom editors and renderers
 	    //==================================
+		
+		// delete CellEditor
 	    table.setDefaultEditor(Delete.class, new ButtonDeleteEditor(new JCheckBox()));
 	    table.setDefaultRenderer(Delete.class, new ButtonRenderer());
+	    
+	    // edit CellEditor
+	    table.setDefaultEditor(Edit.class, new ButtonEditEditor(new JCheckBox()));
+	    table.setDefaultRenderer(Edit.class, new ButtonRenderer());
 	    
 	    // Semester CellEditor
 	    LinkedList<Semester> listSemester = gc.getSemesterDao().getData();

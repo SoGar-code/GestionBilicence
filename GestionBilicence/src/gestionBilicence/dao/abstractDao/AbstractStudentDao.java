@@ -1,16 +1,7 @@
 package gestionBilicence.dao.abstractDao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.LinkedList;
-
-import javax.swing.JOptionPane;
-
 import gestionBilicence.dao.Dao;
-import gestionBilicence.edition.Semester;
+import gestionBilicence.edition.ExtraInfoStudent;
 import gestionBilicence.edition.Student;
 
 public abstract class AbstractStudentDao extends Dao<Student> {
@@ -20,5 +11,8 @@ public abstract class AbstractStudentDao extends Dao<Student> {
 	// we create and initialize a new one in the database
 	public abstract Student anyElement();
 	
-	public abstract LinkedList<Student> getData(boolean inverseSort);
+	public abstract ExtraInfoStudent getInfo(Student stud);
+	
+	public abstract void updateInfo(Student stud, ExtraInfoStudent info);
+	
 }

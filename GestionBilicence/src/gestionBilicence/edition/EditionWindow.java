@@ -13,12 +13,12 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-import gestionBilicence.general.ConnectionDialog;
 import gestionBilicence.general.Entity;
 import gestionBilicence.general.GTable;
 import gestionBilicence.general.GeneralWindow;
 import gestionBilicence.general.ListTableModel;
 import gestionBilicence.general.editorsRenderers.Delete;
+import gestionBilicence.general.editorsRenderers.Edit;
 
 /**
  * Window to edit elements in the database
@@ -33,7 +33,7 @@ public class EditionWindow extends GeneralWindow {
 	private JPanel pan;
 	private JButton saveButton;
 	private JButton newLineButton;
-	private JButton editButton;
+	//private JButton editButton;
 	private JTabbedPane tabbedPane;
 
 	public EditionWindow(){
@@ -49,8 +49,8 @@ public class EditionWindow extends GeneralWindow {
 		
 		// Creation of student tab (already initialized):
 		listTableModelVect[0] = new ListTableModel(
-				new Class[] {String.class, String.class, Delete.class},
-				new String[] {"First name","Family Name","Delete"},
+				new Class[] {String.class, String.class, Edit.class, Delete.class},
+				new String[] {"First name","Family Name","Edit","Delete"},
 				gc.getCurrentData() // at that point, we should have currentEntity=0
 				);
 		// include listTableModel as observer of gc (changes in the data).
@@ -98,7 +98,7 @@ public class EditionWindow extends GeneralWindow {
 		// Buttons and listeners
 		//======================
 		newLineButton = new JButton("New line");
-		editButton = new JButton("Edit/More info");
+		//editButton = new JButton("Edit/More info");
 		saveButton = new JButton("Save/update");
 	    
 		// Keeping the listeners as generic as possible
@@ -111,18 +111,20 @@ public class EditionWindow extends GeneralWindow {
 			}
 		}
 		
+		/*
 		// listener on the "Edit" button
 		class EditListener implements ActionListener{
 			public void actionPerformed(ActionEvent event){
 				int currentEntity = tabbedPane.getSelectedIndex();
 				// currentEntity==0 corresponds to Student
 				if (currentEntity==0){
-					EditStudentDialog studDialog = new EditStudentDialog();
+					EditStudentDialog studDialog = new EditStudentDialog(Student.defaultElement());
 					studDialog.showEditStudentDialog();
 				}
 				//((GTable) tabbedPane.getSelectedComponent()).getModel().addRow();
 			}
 		}
+		*/
 		
 		// listener on the "Save/update" button
 		class SaveListener implements ActionListener{
@@ -145,7 +147,7 @@ public class EditionWindow extends GeneralWindow {
 		}
 	    
 	    newLineButton.addActionListener(new AddListener());
-	    editButton.addActionListener(new EditListener());
+	    //editButton.addActionListener(new EditListener());
 	    saveButton.addActionListener(new SaveListener());
 		
 		
@@ -158,7 +160,7 @@ public class EditionWindow extends GeneralWindow {
 	    gl.setHgap(5);
 	    pan = new JPanel(gl);
 	    pan.add(newLineButton);
-	    pan.add(editButton);
+	    //pan.add(editButton);
 	    pan.add(saveButton);
 		
 		this.setLayout(new BorderLayout());

@@ -12,7 +12,7 @@ import javax.swing.JTable;
 import gestionBilicence.general.GeneralController;
 import gestionBilicence.general.ListTableModel;
 
-public class ButtonDeleteEditor extends DefaultCellEditor {
+public class ButtonEditEditor extends DefaultCellEditor {
 	/*
 	 * An editor for Delete.class columns.
 	 * Comes with a listener to delete the associated row
@@ -24,7 +24,7 @@ public class ButtonDeleteEditor extends DefaultCellEditor {
 	 private ButtonListener bListener = new ButtonListener();
 	 private JTable table;
 	  
-	 public ButtonDeleteEditor(JCheckBox checkBox) {
+	 public ButtonEditEditor(JCheckBox checkBox) {
 	    //By default, this type of object uses a JCheckBox
 	    super(checkBox);
 	    
@@ -61,7 +61,7 @@ public class ButtonDeleteEditor extends DefaultCellEditor {
 		public JButton getButton(){return this.button;}
 		
 		public void actionPerformed(ActionEvent event){
-			((ListTableModel)table.getModel()).removeRow(row);
+			((ListTableModel)table.getModel()).editRow(row);
 		}
 	 }
 }

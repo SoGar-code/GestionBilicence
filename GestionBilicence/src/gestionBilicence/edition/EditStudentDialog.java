@@ -1,18 +1,18 @@
 package gestionBilicence.edition;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.Locale;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JDialog;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
+
+import gestionBilicence.general.GeneralController;
 
 /**
  * 
@@ -21,14 +21,11 @@ import javax.swing.JTextField;
  */
 
 public class EditStudentDialog extends JDialog {
-	boolean hasEmail;
-	String email;
-	boolean hasStudNum;
-	int studNum;
+	private ExtraInfoStudent infoOutput; 
 
-	public EditStudentDialog(){
+	public EditStudentDialog(Student stud){
 		super();
-		this.setTitle("Student — edition dialog");
+		this.setTitle("Edition dialog — student "+stud.toString());
 		this.setModal(true);
 		this.setSize(400,150);
 		this.setLocationRelativeTo(null);
@@ -36,56 +33,29 @@ public class EditStudentDialog extends JDialog {
 		JPanel selectionPan = new JPanel();
 		JPanel controlPan = new JPanel();
 		
+		GeneralController gc = GeneralController.getInstance();
+		
+		ExtraInfoStudent info = gc.getStudentDao().getInfo(stud);
+		
 		// Definition of selection panel
-		int height = 15;
-		int labelWidth = 100;
-		
-		JLabel studNumLabel = new JLabel("APOGEE number:");
-		studNumLabel.setPreferredSize( new Dimension(labelWidth,height));
-		JCheckBox studNumCheckBox = new JCheckBox();
-		studNumCheckBox.setPreferredSize( new Dimension(20,height));
-		JTextField studNumJtf = new JTextField("");
-		studNumJtf.setPreferredSize(new Dimension(90,height));
-		
-		JPanel lineOnePan = new JPanel();
-		lineOnePan.setLayout(new BoxLayout(lineOnePan,BoxLayout.LINE_AXIS));
-		lineOnePan.add(studNumLabel);
-		lineOnePan.add(studNumCheckBox);
-		lineOnePan.add(studNumJtf);
-		
-		
-		JLabel emailLabel = new JLabel("E-mail:");
-		emailLabel.setPreferredSize( new Dimension(labelWidth,height));
-		JCheckBox emailCheckBox = new JCheckBox();
-		emailCheckBox.setPreferredSize( new Dimension(20,height));
-		JTextField emailJtf = new JTextField("");
-		emailJtf.setPreferredSize(new Dimension(90,height));
-		
-		JPanel lineTwoPan = new JPanel();
-		lineTwoPan.setLayout(new BoxLayout(lineTwoPan,BoxLayout.LINE_AXIS));
-		lineTwoPan.add(emailLabel);
-		lineTwoPan.add(emailCheckBox);
-		lineTwoPan.add(emailJtf);
-		
-		
-		JLabel apbNumLabel = new JLabel("APB number:");
-		apbNumLabel.setPreferredSize( new Dimension(labelWidth,height));
-		JCheckBox apbNumCheckBox = new JCheckBox();
-		apbNumCheckBox.setPreferredSize( new Dimension(20,height));
-		JTextField apbNumJtf = new JTextField("");
-		apbNumJtf.setPreferredSize(new Dimension(90,height));
-		
-		JPanel lineThreePan = new JPanel();
-		lineThreePan.setLayout(new BoxLayout(lineThreePan,BoxLayout.LINE_AXIS));
-		lineThreePan.add(apbNumLabel);
-		lineThreePan.add(apbNumCheckBox);
-		lineThreePan.add(apbNumJtf);
+		StringInfoPanel apogeePan = new StringInfoPanel("APOGEE number",
+				info.isHasApogeeNum(),
+				info.getApogeeNum()
+				);	
+		StringInfoPanel emailPan = new StringInfoPanel("E-mail",
+				info.isHasEmail(),
+				info.getEmail()
+				);	
+		StringInfoPanel apbPan = new StringInfoPanel("APB number",
+				info.isHasApbNum(),
+				info.getApbNum()
+				);	
 		
 		// final assembly selectionPan
 		selectionPan.setLayout(new BoxLayout(selectionPan,BoxLayout.PAGE_AXIS));
-		selectionPan.add(lineOnePan);
-		selectionPan.add(lineTwoPan);
-		selectionPan.add(lineThreePan);
+		selectionPan.add(apogeePan);
+		selectionPan.add(emailPan);
+		selectionPan.add(apbPan);
 		
 		// Definition of control panel
 	    JButton cancelBouton = new JButton("Cancel");
@@ -98,15 +68,15 @@ public class EditStudentDialog extends JDialog {
 		
 	    JButton okBouton = new JButton("Ok");
 	    okBouton.addActionListener(new ActionListener(){
-	      public void actionPerformed(ActionEvent arg0){
+	      public void actionPerformed(ActionEvent arg0){  		  
 	    	  // recover elements:
-	    	  /*
-	    	  user = userJtf.getText();
-	    	  passwd = passwdJtf.getText();
-	    	  host = (String)hostCombo.getSelectedItem();
-	    	  dataBase = (String)dbCombo.getSelectedItem();
-	    	  */
-	    		    	
+	    	  infoOutput = new ExtraInfoStudent(
+	    			  apbPan.getBool(),
+	    			  apbPan.getValue(),
+	    			  apogeePan.getBool(),
+	    			  apogeePan.getValue(),
+	    			  emailPan.getBool(),
+	    			  emailPan.getValue());
 	    	  // ends dialog by making the box invisible
 	    	  setVisible(false);
 	      }
@@ -119,9 +89,8 @@ public class EditStudentDialog extends JDialog {
 	    this.getContentPane().add(controlPan, BorderLayout.SOUTH);
 	}
 	
-	public void showEditStudentDialog(){
+	public ExtraInfoStudent showEditStudentDialog(){
 		this.setVisible(true);
-		//String[] infoConn = new String[] {this.user, this.passwd, this.host, this.dataBase};
-		//return null;
+		return infoOutput;
 	}
 }
