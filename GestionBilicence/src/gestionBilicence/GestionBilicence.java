@@ -10,8 +10,12 @@ import java.awt.event.ActionListener;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
+import gestionBilicence.csvImport.CsvImport;
 import gestionBilicence.edition.EditionWindow;
 import gestionBilicence.general.GeneralController;
 import gestionBilicence.general.GeneralWindow;
@@ -31,6 +35,23 @@ public class GestionBilicence extends JFrame{
 		
 		// initialise the controller
 		GeneralController gc = GeneralController.getInstance();
+		
+		// ===============================
+		// Create the menu bar
+		// ===============================
+		JMenuBar menuBar = new JMenuBar();
+		JMenu filesMenu = new JMenu("File");
+		JMenuItem item1 = new JMenuItem("Import...");
+		menuBar.add(filesMenu);
+		filesMenu.add(item1);
+
+		item1.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0){
+				System.out.println("GestionBilicence: 'Import' of MenuBar activated!");
+				CsvImport csvImport = new CsvImport();
+				csvImport.importCsv();
+			}
+		});
 		
 		// ===============================
 		// Create the card layout of the interface
@@ -76,6 +97,7 @@ public class GestionBilicence extends JFrame{
 		// ===============================
 		// final assembly
 		// ===============================
+		this.setJMenuBar(menuBar);
 		this.getContentPane().setLayout(new BorderLayout());
 		this.getContentPane().add(topPan, BorderLayout.NORTH);
 		this.getContentPane().add(content, BorderLayout.CENTER);

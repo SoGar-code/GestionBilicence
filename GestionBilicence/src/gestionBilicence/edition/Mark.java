@@ -10,9 +10,9 @@ import gestionBilicence.general.Entity;
 import gestionBilicence.general.GeneralController;
 
 public class Mark extends Entity {
-	protected Exams exam;
-	protected Student student;
 	protected float mark;
+	protected Student student;
+	protected Exams exam;
 	
 	
 	public Mark(float mark, Student student, Exams exam) {
