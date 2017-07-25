@@ -1,8 +1,11 @@
 package gestionBilicence.csvImport;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+
+import org.apache.commons.lang3.StringUtils;
 
 import gestionBilicence.edition.Exams;
 import gestionBilicence.edition.ExtraInfoStudent;
@@ -27,7 +30,9 @@ public class SimpleImportReader extends AbstractImportReader {
         String line = "";
         String cvsSplitBy = ",";
 
-        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+        try (BufferedReader br = new BufferedReader(
+        		new InputStreamReader(
+        				new FileInputStream(path), "UTF8"))) {
             /* Assuming the format of the csv file is:
             * _ a single header line
             * _ values separated by commas
@@ -41,8 +46,8 @@ public class SimpleImportReader extends AbstractImportReader {
                 String[] elements = line.split(cvsSplitBy);
                 
                 Student stud = new Student(
-                		elements[2].toLowerCase(), //first_name
-                		elements[1]  //last_name
+                		StringUtils.capitalize(elements[2].toLowerCase()), //first_name
+                		StringUtils.capitalize(elements[1].toLowerCase())  //last_name
                 		);
                 gc.getStudentDao().create(stud); // should update index accordingly
                 
@@ -57,26 +62,37 @@ public class SimpleImportReader extends AbstractImportReader {
                 gc.getStudentDao().updateInfo(stud, info);
                 
                 // elements[5] corresponds to the exam with index 1
-                Exams exam = gc.getExamsDao().find(1);
+                Exams exam0 = gc.getExamsDao().find(1);
+                try{
+                	float markFloat = Float.parseFloat(elements[5]);
+                    Mark mark = new Mark(
+                    		markFloat,// float mark;
+                    		stud, // Student student;
+                    		exam0 // Exams exam;
+                    		);
+                    gc.getMarkDao().create(mark);
+                } catch (NumberFormatException e){
                 // case when elements[5] cannot be parsed to a float:
                 // NumberFormatException
-                
-                Mark mark = new Mark(
-                		Float.parseFloat(elements[5]),// float mark;
-                		stud, // Student student;
-                		exam // Exams exam;
-                		);
-                gc.getMarkDao().create(mark);
+                	// do nothing
+                }
+
                 
              // elements[6] corresponds to the exam with index 2
                 Exams exam1 = gc.getExamsDao().find(2);
-                
-                Mark mark1 = new Mark(
-                		Float.parseFloat(elements[6]),// float mark;
-                		stud, // Student student;
-                		exam1 // Exams exam;
-                		);
-                gc.getMarkDao().create(mark);
+                try{
+                	float markFloat = Float.parseFloat(elements[6]);
+                    Mark mark = new Mark(
+                    		markFloat,// float mark;
+                    		stud, // Student student;
+                    		exam1 // Exams exam;
+                    		);
+                    gc.getMarkDao().create(mark);
+                } catch (NumberFormatException e){
+                // case when elements[6] cannot be parsed to a float:
+                // NumberFormatException
+                	// do nothing
+                }
                 
             }
         } catch (IOException e) {
