@@ -100,4 +100,7 @@ public class SimpleImportReader extends AbstractImportReader {
         }
 	}
 
+	public String toString(){
+		return "SimpleImportReader";
+	}
 }

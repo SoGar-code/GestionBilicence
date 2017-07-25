@@ -21,7 +21,8 @@ import gestionBilicence.general.GeneralController;
  */
 
 public class EditStudentDialog extends JDialog {
-	private ExtraInfoStudent infoOutput; 
+	private ExtraInfoStudent infoOutput;
+	private boolean updated = false;
 
 	public EditStudentDialog(Student stud){
 		super();
@@ -78,6 +79,7 @@ public class EditStudentDialog extends JDialog {
 	    			  emailPan.getBool(),
 	    			  emailPan.getValue());
 	    	  // ends dialog by making the box invisible
+	    	  updated = true;
 	    	  setVisible(false);
 	      }
 	    });
@@ -89,8 +91,12 @@ public class EditStudentDialog extends JDialog {
 	    this.getContentPane().add(controlPan, BorderLayout.SOUTH);
 	}
 	
-	public ExtraInfoStudent showEditStudentDialog(){
+	public boolean showEditStudentDialog(){
 		this.setVisible(true);
+		return updated;
+	}
+	
+	public ExtraInfoStudent getInfoOutput(){
 		return infoOutput;
 	}
 }

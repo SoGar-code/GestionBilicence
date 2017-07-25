@@ -105,8 +105,14 @@ public class ListTableModel extends AbstractTableModel implements Observer{
 	public void editRow(int row){
 		Student stud = (Student)data.get(row);
 		EditStudentDialog studDialog = new EditStudentDialog(stud);
-		ExtraInfoStudent info = studDialog.showEditStudentDialog();
-		gc.getStudentDao().updateInfo(stud, info);
+		if (studDialog.showEditStudentDialog()){
+			ExtraInfoStudent info = studDialog.getInfoOutput();
+			try{
+				gc.getStudentDao().updateInfo(stud, info);
+			} catch (NullPointerException e){
+				// case when studDialog exits with a "Cancel".
+			}
+		}
 	}
 	
 	public StudentAction getStudentAction(){

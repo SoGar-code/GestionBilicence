@@ -30,15 +30,18 @@ public class PostgreSQLFactory extends AbstractDaoFactory {
 	        conn = DriverManager.getConnection(url, user, passwd);
 	        // commits automatiques ou pas
 	        conn.setAutoCommit(true);
-			System.out.println("PostgreSQLFactory ready!");
+			JOptionPane jop = new JOptionPane();
+			jop.showMessageDialog(null,"PostgreSQLFactory -- Connection up and running!","PostgreSQLFactory", JOptionPane.INFORMATION_MESSAGE);
 		} catch (ClassNotFoundException e) {
-	        e.printStackTrace();
+			JOptionPane jop = new JOptionPane();
+	        jop.showMessageDialog(null,e.getMessage(),"PostgreSQLFactory -- ClassNotFoundException", JOptionPane.INFORMATION_MESSAGE);
 		} catch (PSQLException e){
 			JOptionPane jop = new JOptionPane();
 			jop.showMessageDialog(null , "Wrong password?", "PostGreSQLFactory -- PSQLException", JOptionPane.ERROR_MESSAGE );
 			e.printStackTrace();
 		} catch (SQLException e){
-			e.printStackTrace();
+			JOptionPane jop = new JOptionPane();
+	        jop.showMessageDialog(null,e.getMessage(),"PostgreSQLFactory -- SQLException", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 

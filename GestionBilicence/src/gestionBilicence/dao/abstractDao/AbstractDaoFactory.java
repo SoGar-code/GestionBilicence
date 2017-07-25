@@ -48,10 +48,10 @@ public abstract class AbstractDaoFactory {
 		
 		// Compare with available options in DialogConnection
 		// Deduce what kind of Database is used
-		if (new String("testbilicence").equals(infoConn[3])){
+		if (new String("testdb").equals(infoConn[3])){
 			return new PostgreSQLFactory(infoConn);
 		}
-		else if (new String("testfranzi").equals(infoConn[3])){
+		else if (new String("livedb").equals(infoConn[3])){
 			return new PostgreSQLFactory(infoConn);
 		}
 		else {

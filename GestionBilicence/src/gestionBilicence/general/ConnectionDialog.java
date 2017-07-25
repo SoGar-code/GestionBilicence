@@ -45,7 +45,7 @@ public class ConnectionDialog extends JDialog{
 		
 		// Chosing databases:
 		JLabel dbLabel = new JLabel("Database:");
-		JComboBox<String> dbCombo = new JComboBox<String>(new String[]{"testbilicence","testfranzi"});
+		JComboBox<String> dbCombo = new JComboBox<String>(new String[]{"testdb","livedb"});
 		
 		// User:
 		JLabel userLabel = new JLabel("User:");
@@ -54,6 +54,11 @@ public class ConnectionDialog extends JDialog{
 		// Password:
 		JLabel passwdLabel = new JLabel("Password:");
 		JPasswordField passwdJtf = new JPasswordField();
+		
+		// type:
+		JLabel typeLabel = new JLabel("Type of database:");
+		String[] listTypes = {"PostgreSQL","MySQL"};
+		JComboBox<String> typeCombo = new JComboBox<String>(listTypes);
 		
 		selectionPan.setLayout(new GridLayout(4,2));
 		selectionPan.add(hostLabel);
@@ -64,6 +69,8 @@ public class ConnectionDialog extends JDialog{
 		selectionPan.add(userJtf);
 		selectionPan.add(passwdLabel);
 		selectionPan.add(passwdJtf);
+		//selectionPan.add(typeLabel);
+		//selectionPan.add(typeCombo);
 		
 	    JButton cancelBouton = new JButton("Cancel");
 	    cancelBouton.addActionListener(new ActionListener(){
@@ -81,6 +88,7 @@ public class ConnectionDialog extends JDialog{
 	    	  passwd = passwdJtf.getText();
 	    	  host = (String)hostCombo.getSelectedItem();
 	    	  dataBase = (String)dbCombo.getSelectedItem();
+	    	  //type = (String)typeCombo.getSelectedItem();
 	    		    	
 	    	  // ends dialog by making the box invisible
 	    	  setVisible(false);

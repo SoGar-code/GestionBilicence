@@ -29,7 +29,7 @@ public class PostgreSQLMarkDao extends AbstractMarkDao {
 	@Override
 	public boolean create(Mark obj) {
 		try{
-			String query="INSERT INTO Marks(id_exam, id_stud, mark) VALUES(?,?,?)";
+			String query="INSERT INTO marks(id_exam, id_stud, mark) VALUES(?,?,?)";
 			PreparedStatement state = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			state.setInt(1, obj.getExam().getIndex());
 			state.setInt(2, obj.getStudent().getIndex());

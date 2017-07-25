@@ -42,8 +42,10 @@ public class GestionBilicence extends JFrame{
 		JMenuBar menuBar = new JMenuBar();
 		JMenu filesMenu = new JMenu("File");
 		JMenuItem item1 = new JMenuItem("Import...");
+		JMenuItem item2 = new JMenuItem("About: v0.9, 2017 by O. Gabriel.");
 		menuBar.add(filesMenu);
 		filesMenu.add(item1);
+		filesMenu.add(item2);
 
 		item1.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0){
