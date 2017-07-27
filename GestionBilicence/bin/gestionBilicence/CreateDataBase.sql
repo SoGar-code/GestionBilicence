@@ -32,7 +32,7 @@ create table marks(
 	id_mark serial primary key
 	, id_exam integer references exams
 	, id_stud integer references students
-	, mark integer
+	, mark numeric
 	);
 
 ------------------------------
@@ -42,7 +42,19 @@ create table marks(
 create table stud_num(
 	id_stud_num serial primary key
 	, id_stud integer references students
-	, stud_number integer
+	, stud_number text
+	);
+	
+create table stud_apb(
+	id_stud_apb serial primary key
+	, id_stud integer references students
+	, stud_apb text
+	);
+	
+create table stud_email(
+	id_stud_email serial primary key
+	, id_stud integer references students
+	, email text
 	);
 
 -- subjects like English, History, ...
