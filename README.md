@@ -12,10 +12,11 @@ The architecture of the program includes provisions to use a MySQL database late
 ## Packages:
 
 - "csvImport" - package containing the methods to import.
+- "dao" - package of classes for the DAO design pattern.
 - "edition" - panel used to edit the different objects of the database.
 - "general" - classes used in other parts of the program. 
-    * Includes the subpackage "dao" including classes for the DAO design pattern.
 - "statistics" - panel used to display statistics about the students and their marks.
+- main class "GestionBilicence.java".
 
 ## Installation procedure:
 
