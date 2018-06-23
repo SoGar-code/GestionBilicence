@@ -6,3 +6,11 @@ GestionBilicence/bin*
 
 # avoid csv files:
 *.csv
+/bin/
+
+
+# avoid .project file
+.project
+
+# avoid .classpath file
+.classpath
